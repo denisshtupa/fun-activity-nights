@@ -386,5 +386,54 @@ export const games = [
       Denis: 'x',
       Gesti: 'x'
     }
+  },
+  // Day 5 – 3 games (20 Mar)
+  {
+    id: 24,
+    dayId: 5,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 0,
+      Antonio: 1,
+      Ervir: 4,
+      Ardit: 'x',
+      Elvis: 0,
+      Arber: 0,
+      Amiklat: 2,
+      Denis: 0,
+      Gesti: 0
+    }
+  },
+  {
+    id: 25,
+    dayId: 5,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 0,
+      Antonio: 0,
+      Ervir: 2,
+      Ardit: 'x',
+      Elvis: 0,
+      Arber: 0,
+      Amiklat: 1,
+      Denis: 0,
+      Gesti: 4
+    }
+  },
+  {
+    id: 26,
+    dayId: 5,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 0,
+      Antonio: 0,
+      Ervir: 4,
+      Ardit: 'x',
+      Elvis: 0,
+      Arber: 0,
+      Amiklat: 2,
+      Denis: 0,
+      Gesti: 1
+    }
   }
 ];

@@ -2,8 +2,6 @@ import React, { useMemo, useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { players, games } from './data/games.js';
 import {
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   Tooltip,
@@ -13,24 +11,23 @@ import {
   Cell,
   Legend,
   LineChart,
-  Line,
-  AreaChart,
-  Area
+  Line
 } from 'recharts';
 
 const TOTAL_TOURNAMENT_NIGHTS = 15;
 
+// Order matches `players` in games.js — picked for clear separation (esp. Duli/Denis, Antonio/Gesti).
 const PLAYER_COLORS = [
-  '#ff6b6b',
-  '#feca57',
-  '#1dd1a1',
-  '#54a0ff',
-  '#5f27cd',
-  '#ff9ff3',
-  '#48dbfb',
-  '#00d2d3',
-  '#ff9f43',
-  '#ee5253'
+  '#f87171', // Antonio — coral red
+  '#facc15', // Amiklat — yellow
+  '#4ade80', // Ardit — green
+  '#60a5fa', // Arber — blue
+  '#c084fc', // Ervir — violet
+  '#f472b6', // Elvis — pink
+  '#38bdf8', // Duli — sky / cyan
+  '#a3e635', // Denis — lime (far from cyan)
+  '#fb923c', // Landi — orange
+  '#e879f9' // Gesti — fuchsia (far from coral red)
 ];
 
 const AppContainer = styled.div`
@@ -152,6 +149,38 @@ const Th = styled.th`
   border-bottom: 1px solid rgba(55, 65, 81, 0.9);
 `;
 
+const SortableTh = styled.th`
+  text-align: left;
+  padding: 10px 12px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  border-bottom: 1px solid rgba(55, 65, 81, 0.9);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    color: #e2e8f0;
+    background: rgba(30, 64, 175, 0.2);
+  }
+`;
+
+const ThInner = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+const SortGlyph = styled.span`
+  font-size: 0.65rem;
+  opacity: ${({ $active }) => ($active ? 1 : 0.35)};
+  color: ${({ $active }) => ($active ? '#a5b4fc' : 'inherit')};
+`;
+
 const Tr = styled.tr`
   &:nth-child(even) {
     background: rgba(15, 23, 42, 0.95);
@@ -208,20 +237,29 @@ const StatPill = styled.span`
 const ChartsGrid = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  grid-auto-rows: 240px;
+  grid-auto-rows: minmax(260px, auto);
   gap: 16px;
+  align-items: stretch;
 
   @media (max-width: 960px) {
     grid-template-columns: minmax(0, 1fr);
   }
 
   @media (max-width: 640px) {
-    grid-auto-rows: 220px;
+    grid-auto-rows: minmax(240px, auto);
   }
 `;
 
 const ChartCard = styled(Card)`
   padding: 14px 14px 10px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+
+  & .recharts-responsive-container {
+    flex: 1;
+    min-height: 140px;
+  }
 `;
 
 const ChartTitle = styled.h3`
@@ -255,6 +293,87 @@ const FilterSelect = styled.select`
   font-size: 0.75rem;
   outline: none;
   cursor: pointer;
+`;
+
+const H2HFilters = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 12px;
+`;
+
+const H2HVs = styled.span`
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+`;
+
+const H2HScoreArea = styled.div`
+  flex: 1;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+`;
+
+const H2HScoreRow = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  font-variant-numeric: tabular-nums;
+`;
+
+const H2HNameLabel = styled.div`
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  max-width: 120px;
+  text-align: center;
+`;
+
+const H2HNamesRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 280px;
+  gap: 16px;
+
+  ${H2HNameLabel}:first-of-type {
+    text-align: left;
+  }
+
+  ${H2HNameLabel}:last-of-type {
+    text-align: right;
+  }
+`;
+
+const H2HScoreNum = styled.span`
+  font-size: 2rem;
+  font-weight: 800;
+  color: #e2e8f0;
+  line-height: 1;
+`;
+
+const H2HScoreSep = styled.span`
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--muted);
+`;
+
+const H2HMeta = styled.p`
+  font-size: 0.68rem;
+  color: var(--muted);
+  text-align: center;
+  margin: 0;
+  line-height: 1.45;
 `;
 
 const NightDropdownWrap = styled.div`
@@ -370,24 +489,40 @@ function computePlayerStats() {
   });
 }
 
-function buildCumulativeLineData(sortedPlayers) {
-  const topNames = sortedPlayers.slice(0, 4).map((p) => p.name);
-  const cumulative = Object.fromEntries(topNames.map((n) => [n, 0]));
+/** Highest night index present in game data (at least 1). Grows when you add nights. */
+function getMaxNightFromGames() {
+  if (games.length === 0) return 1;
+  return Math.max(1, ...games.map((g) => g.dayId ?? 1));
+}
 
-  return games.map((game, index) => {
-    const pointObject = {};
-    topNames.forEach((name) => {
-      const value = game.pointsByPlayer[name];
-      const numeric = typeof value === 'number' ? value : 0;
-      cumulative[name] += numeric;
-      pointObject[name] = cumulative[name];
+/** Cumulative points after each night (Night 1 … max night in data); all players. */
+function buildCumulativeLineDataByNight() {
+  const maxNight = getMaxNightFromGames();
+  const cumulative = Object.fromEntries(players.map((n) => [n, 0]));
+  const rows = [];
+
+  for (let night = 1; night <= maxNight; night++) {
+    const nightGames = games.filter((g) => (g.dayId ?? 1) === night);
+    if (nightGames.length > 0) {
+      players.forEach((name) => {
+        let add = 0;
+        nightGames.forEach((game) => {
+          const v = game.pointsByPlayer[name];
+          if (typeof v === 'number') add += v;
+        });
+        cumulative[name] += add;
+      });
+    }
+    rows.push({
+      night: `Night ${night}`,
+      ...players.reduce((acc, name) => {
+        acc[name] = cumulative[name];
+        return acc;
+      }, {})
     });
+  }
 
-    return {
-      game: `G${index + 1}`,
-      ...pointObject
-    };
-  });
+  return { rows, maxNight };
 }
 
 function buildPerGamePotDistribution() {
@@ -439,8 +574,72 @@ function buildPointsByDayByPlayer() {
   });
 }
 
+const TABLE_SORT_DEFAULTS = {
+  name: 'asc',
+  total: 'desc',
+  gamesPlayed: 'desc',
+  wins: 'desc',
+  seconds: 'desc',
+  thirds: 'desc',
+  avgPoints: 'desc'
+};
+
+/** Games where both played (not absent); winner = more points in that game. */
+function countHeadToHead(playerA, playerB) {
+  if (!playerA || !playerB || playerA === playerB) {
+    return { winsA: 0, winsB: 0, ties: 0, gamesCompared: 0 };
+  }
+  let winsA = 0;
+  let winsB = 0;
+  let ties = 0;
+  for (const game of games) {
+    const rawA = game.pointsByPlayer[playerA];
+    const rawB = game.pointsByPlayer[playerB];
+    if (rawA === 'x' || rawB === 'x') continue;
+    const ptsA = typeof rawA === 'number' ? rawA : 0;
+    const ptsB = typeof rawB === 'number' ? rawB : 0;
+    const onPodium = (p) => p === 4 || p === 2 || p === 1;
+    if (!onPodium(ptsA) || !onPodium(ptsB)) continue;
+    if (ptsA > ptsB) winsA++;
+    else if (ptsB > ptsA) winsB++;
+    else ties++;
+  }
+  return { winsA, winsB, ties, gamesCompared: winsA + winsB + ties };
+}
+
+function comparePlayersForTable(a, b, sortKey, sortDir) {
+  const flip = sortDir === 'asc' ? 1 : -1;
+  if (sortKey === 'name') {
+    const cmp = a.name.localeCompare(b.name);
+    return sortDir === 'asc' ? cmp : -cmp;
+  }
+  let cmp = 0;
+  switch (sortKey) {
+    case 'total':
+      cmp = a.totalPoints - b.totalPoints || a.wins - b.wins;
+      break;
+    case 'gamesPlayed':
+      cmp = a.gamesPlayed - b.gamesPlayed || a.totalPoints - b.totalPoints;
+      break;
+    case 'wins':
+      cmp = a.wins - b.wins || a.totalPoints - b.totalPoints;
+      break;
+    case 'seconds':
+      cmp = a.seconds - b.seconds || a.totalPoints - b.totalPoints;
+      break;
+    case 'thirds':
+      cmp = a.thirds - b.thirds || a.totalPoints - b.totalPoints;
+      break;
+    case 'avgPoints':
+      cmp = a.avgPoints - b.avgPoints || a.gamesPlayed - b.gamesPlayed;
+      break;
+    default:
+      return 0;
+  }
+  return flip * cmp;
+}
+
 const App = () => {
-  const [highlightedPlayer, setHighlightedPlayer] = useState('ALL');
   const [selectedNightIds, setSelectedNightIds] = useState([]);
   const [nightsDropdownOpen, setNightsDropdownOpen] = useState(false);
   const nightsDropdownRef = useRef(null);
@@ -457,69 +656,102 @@ const App = () => {
   }, [nightsDropdownOpen]);
 
   const {
-    sortedStats,
-    barData,
+    playerStats,
+    chartSortedPlayers,
     pieData,
-    participationData,
     cumulativeLineData,
+    cumulativeChartMaxNight,
+    cumulativeChartMaxY,
     potDistribution,
     pointsByDay,
     pointsByDayByPlayer,
-    nightIds,
-    totalGames
+    nightIds
   } = useMemo(() => {
     const stats = computePlayerStats();
-    const sorted = [...stats].sort((a, b) => b.totalPoints - a.totalPoints || b.wins - a.wins);
+    const chartSorted = [...stats].sort((a, b) => b.totalPoints - a.totalPoints || b.wins - a.wins);
 
-    const bar = sorted.map((p) => ({
-      name: p.name,
-      points: p.totalPoints
-    }));
-
-    const pie = sorted.map((p, index) => ({
+    const pie = chartSorted.map((p, index) => ({
       name: p.name,
       value: p.totalPoints || 0,
       color: PLAYER_COLORS[index % PLAYER_COLORS.length]
     }));
 
-    const participation = sorted.map((p) => ({
-      name: p.name,
-      games: p.gamesPlayed
-    }));
+    const { rows: lineData, maxNight: cumulativeChartMaxNight } = buildCumulativeLineDataByNight();
+    let maxPoints = 0;
+    lineData.forEach((row) => {
+      players.forEach((p) => {
+        maxPoints = Math.max(maxPoints, row[p] ?? 0);
+      });
+    });
+    const cumulativeChartMaxY = Math.max(
+      70,
+      Math.ceil(maxPoints / 10) * 10
+    );
 
-    const lineData = buildCumulativeLineData(sorted);
     const pot = buildPerGamePotDistribution();
     const byDay = buildPointsByDay();
     const byDayByPlayer = buildPointsByDayByPlayer();
 
     return {
-      sortedStats: sorted,
-      barData: bar,
+      playerStats: stats,
+      chartSortedPlayers: chartSorted,
       pieData: pie,
-      participationData: participation,
       cumulativeLineData: lineData,
+      cumulativeChartMaxNight,
+      cumulativeChartMaxY,
       potDistribution: pot,
       pointsByDay: byDay,
       pointsByDayByPlayer: byDayByPlayer,
-      nightIds: byDayByPlayer.map((r) => r.dayId),
-      totalGames: games.length
+      nightIds: byDayByPlayer.map((r) => r.dayId)
     };
   }, []);
 
-  const topPerformer = sortedStats[0];
-  const mostConsistent = [...sortedStats].sort(
+  const [h2hLeft, setH2hLeft] = useState(
+    () => chartSortedPlayers[0]?.name ?? players[0]
+  );
+  const [h2hRight, setH2hRight] = useState(
+    () => chartSortedPlayers[1]?.name ?? players[1]
+  );
+
+  const [tableSortKey, setTableSortKey] = useState('total');
+  const [tableSortDir, setTableSortDir] = useState('desc');
+
+  const tableRows = useMemo(
+    () =>
+      [...playerStats].sort((a, b) => comparePlayersForTable(a, b, tableSortKey, tableSortDir)),
+    [playerStats, tableSortKey, tableSortDir]
+  );
+
+  const handleTableSort = (key) => {
+    if (tableSortKey === key) {
+      setTableSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setTableSortKey(key);
+      setTableSortDir(TABLE_SORT_DEFAULTS[key] ?? 'desc');
+    }
+  };
+
+  const topPerformer = chartSortedPlayers[0];
+  const mostAvgPerGame = [...playerStats].sort(
     (a, b) => b.avgPoints - a.avgPoints || b.gamesPlayed - a.gamesPlayed
   )[0];
+  const mostGamesPlayed = [...playerStats].sort(
+    (a, b) => b.gamesPlayed - a.gamesPlayed || b.totalPoints - a.totalPoints
+  )[0];
+  const mostFirst = [...playerStats].sort(
+    (a, b) => b.wins - a.wins || b.totalPoints - a.totalPoints
+  )[0];
+  const mostSecond = [...playerStats].sort(
+    (a, b) => b.seconds - a.seconds || b.totalPoints - a.totalPoints
+  )[0];
+  const mostThird = [...playerStats].sort(
+    (a, b) => b.thirds - a.thirds || b.totalPoints - a.totalPoints
+  )[0];
 
-  const filteredBarData =
-    highlightedPlayer === 'ALL'
-      ? barData
-      : barData.filter((entry) => entry.name === highlightedPlayer);
-
-  const filteredParticipationData =
-    highlightedPlayer === 'ALL'
-      ? participationData
-      : participationData.filter((entry) => entry.name === highlightedPlayer);
+  const h2h = useMemo(
+    () => countHeadToHead(h2hLeft, h2hRight),
+    [h2hLeft, h2hRight]
+  );
 
   const filteredPointsByDayByPlayer =
     selectedNightIds.length === 0
@@ -548,11 +780,6 @@ const App = () => {
       <Header>
         <TitleGroup>
           <Title>Poker Nights Dashboard</Title>
-          <Subtitle>
-            Live-style overview of weekly games between Antonio, Amiklat, Ardit, Arber, Ervir,
-            Elvis, Duli, Denis, Landi and Gesti. Points are awarded 4-2-1 for the top three, 0 for
-            other attendees, and &apos;x&apos; for absentees.
-          </Subtitle>
         </TitleGroup>
         <div>
           <Badge>
@@ -566,7 +793,7 @@ const App = () => {
           <CardHeader>
             <CardTitle>Overall Standings</CardTitle>
             <CardMeta>
-              Sorted by total points, then wins. Hover rows and charts to explore performance.
+              Click any column header to sort by that column.
             </CardMeta>
           </CardHeader>
 
@@ -574,18 +801,67 @@ const App = () => {
             <StandingsTable>
               <thead>
                 <Tr>
-                  <Th>#</Th>
-                  <Th>Player</Th>
-                  <Th>Total</Th>
-                  <Th>Gms</Th>
-                  <Th>1st</Th>
-                  <Th>2nd</Th>
-                  <Th>3rd</Th>
-                  <Th>Avg / game</Th>
+                  <Th title="Rank for the current sort">#</Th>
+                  <SortableTh scope="col" onClick={() => handleTableSort('name')}>
+                    <ThInner>
+                      Player
+                      <SortGlyph $active={tableSortKey === 'name'}>
+                        {tableSortKey === 'name' ? (tableSortDir === 'asc' ? '↑' : '↓') : '↕'}
+                      </SortGlyph>
+                    </ThInner>
+                  </SortableTh>
+                  <SortableTh scope="col" onClick={() => handleTableSort('total')}>
+                    <ThInner>
+                      Total
+                      <SortGlyph $active={tableSortKey === 'total'}>
+                        {tableSortKey === 'total' ? (tableSortDir === 'asc' ? '↑' : '↓') : '↕'}
+                      </SortGlyph>
+                    </ThInner>
+                  </SortableTh>
+                  <SortableTh scope="col" onClick={() => handleTableSort('gamesPlayed')}>
+                    <ThInner>
+                      Gms
+                      <SortGlyph $active={tableSortKey === 'gamesPlayed'}>
+                        {tableSortKey === 'gamesPlayed' ? (tableSortDir === 'asc' ? '↑' : '↓') : '↕'}
+                      </SortGlyph>
+                    </ThInner>
+                  </SortableTh>
+                  <SortableTh scope="col" onClick={() => handleTableSort('wins')}>
+                    <ThInner>
+                      1st
+                      <SortGlyph $active={tableSortKey === 'wins'}>
+                        {tableSortKey === 'wins' ? (tableSortDir === 'asc' ? '↑' : '↓') : '↕'}
+                      </SortGlyph>
+                    </ThInner>
+                  </SortableTh>
+                  <SortableTh scope="col" onClick={() => handleTableSort('seconds')}>
+                    <ThInner>
+                      2nd
+                      <SortGlyph $active={tableSortKey === 'seconds'}>
+                        {tableSortKey === 'seconds' ? (tableSortDir === 'asc' ? '↑' : '↓') : '↕'}
+                      </SortGlyph>
+                    </ThInner>
+                  </SortableTh>
+                  <SortableTh scope="col" onClick={() => handleTableSort('thirds')}>
+                    <ThInner>
+                      3rd
+                      <SortGlyph $active={tableSortKey === 'thirds'}>
+                        {tableSortKey === 'thirds' ? (tableSortDir === 'asc' ? '↑' : '↓') : '↕'}
+                      </SortGlyph>
+                    </ThInner>
+                  </SortableTh>
+                  <SortableTh scope="col" onClick={() => handleTableSort('avgPoints')}>
+                    <ThInner>
+                      PPG
+                      <SortGlyph $active={tableSortKey === 'avgPoints'}>
+                        {tableSortKey === 'avgPoints' ? (tableSortDir === 'asc' ? '↑' : '↓') : '↕'}
+                      </SortGlyph>
+                    </ThInner>
+                  </SortableTh>
                 </Tr>
               </thead>
               <tbody>
-                {sortedStats.map((player, index) => (
+                {tableRows.map((player, index) => (
                   <Tr key={player.name}>
                     <Td>
                       <RankPill rank={index + 1}>{index + 1}</RankPill>
@@ -616,10 +892,35 @@ const App = () => {
               </span>
             </MiniStat>
             <MiniStat>
+              <Dot color="#3b82f6" />
+              <span>
+                Most participated: <strong>{mostGamesPlayed.name}</strong> (
+                {mostGamesPlayed.gamesPlayed} games)
+              </span>
+            </MiniStat>
+            <MiniStat>
               <Dot color="#22c55e" />
               <span>
-                Most consistent: <strong>{mostConsistent.name}</strong> (
-                {mostConsistent.avgPoints.toFixed(2)} pts / game)
+                Most 1st: <strong>{mostFirst.name}</strong> ({mostFirst.wins} wins)
+              </span>
+            </MiniStat>
+            <MiniStat>
+              <Dot color="#a855f7" />
+              <span>
+                Most 2nd: <strong>{mostSecond.name}</strong> ({mostSecond.seconds})
+              </span>
+            </MiniStat>
+            <MiniStat>
+              <Dot color="#f97316" />
+              <span>
+                Most 3rd: <strong>{mostThird.name}</strong> ({mostThird.thirds})
+              </span>
+            </MiniStat>
+            <MiniStat>
+              <Dot color="#06b6d4" />
+              <span>
+                PPG: <strong>{mostAvgPerGame.name}</strong> (
+                {mostAvgPerGame.avgPoints.toFixed(2)})
               </span>
             </MiniStat>
           </MiniStatRow>
@@ -628,90 +929,134 @@ const App = () => {
         <div>
           <ChartsGrid>
             <ChartCard>
-              <ChartTitle>Points by Player</ChartTitle>
-              <ChartMeta>Bar chart of total points across all games.</ChartMeta>
-              <FiltersRow>
+              <ChartTitle>Head to head</ChartTitle>
+              <ChartMeta>
+                Games where both players scored podium points (1st / 2nd / 3rd). Whoever had
+                more points that game wins the matchup (+1).
+              </ChartMeta>
+              <H2HFilters>
                 <FilterSelect
-                  value={highlightedPlayer}
-                  onChange={(e) => setHighlightedPlayer(e.target.value)}
+                  value={h2hLeft}
+                  onChange={(e) => setH2hLeft(e.target.value)}
+                  aria-label="Head to head player 1"
                 >
-                  <option value="ALL">All players</option>
                   {players.map((name) => (
                     <option key={name} value={name}>
                       {name}
                     </option>
                   ))}
                 </FilterSelect>
-              </FiltersRow>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={filteredBarData} margin={{ top: 10, right: 10, left: -16, bottom: 4 }}>
-                  <XAxis dataKey="name" tick={{ fill: '#9ca3af', fontSize: 10 }} />
-                  <YAxis tick={{ fill: '#9ca3af', fontSize: 10 }} />
-                  <Tooltip
-                    contentStyle={{
-                      background: '#020617',
-                      border: '1px solid #1f2937',
-                      borderRadius: 12,
-                      fontSize: 12
-                    }}
-                  />
-                  <Bar dataKey="points" radius={[6, 6, 0, 0]}>
-                    {filteredBarData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${entry.name}`}
-                        fill={PLAYER_COLORS[index % PLAYER_COLORS.length]}
-                      />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+                <H2HVs>VS</H2HVs>
+                <FilterSelect
+                  value={h2hRight}
+                  onChange={(e) => setH2hRight(e.target.value)}
+                  aria-label="Head to head player 2"
+                >
+                  {players.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </FilterSelect>
+              </H2HFilters>
+              <H2HScoreArea>
+                {h2hLeft === h2hRight ? (
+                  <H2HMeta>Select two different players to compare head to head.</H2HMeta>
+                ) : (
+                  <>
+                    <H2HNamesRow>
+                      <H2HNameLabel>{h2hLeft}</H2HNameLabel>
+                      <H2HNameLabel>{h2hRight}</H2HNameLabel>
+                    </H2HNamesRow>
+                    <H2HScoreRow>
+                      <H2HScoreNum>{h2h.winsA}</H2HScoreNum>
+                      <H2HScoreSep>—</H2HScoreSep>
+                      <H2HScoreNum>{h2h.winsB}</H2HScoreNum>
+                    </H2HScoreRow>
+                    <H2HMeta>
+                      {h2h.gamesCompared === 0
+                        ? 'No games yet where both finished on the podium together.'
+                        : `${h2h.gamesCompared} game${h2h.gamesCompared === 1 ? '' : 's'} counted`}
+                      {h2h.ties > 0 ? ` · ${h2h.ties} tied` : ''}
+                    </H2HMeta>
+                    <ResponsiveContainer width="100%" height={160}>
+                      <PieChart margin={{ top: 4, right: 4, bottom: 4, left: 4 }}>
+                        <Pie
+                          data={[
+                            { name: h2hLeft, value: h2h.winsA },
+                            { name: h2hRight, value: h2h.winsB }
+                          ]}
+                          dataKey="value"
+                          nameKey="name"
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={0}
+                          outerRadius="78%"
+                          paddingAngle={0}
+                          stroke="none"
+                        >
+                          <Cell
+                            fill={PLAYER_COLORS[players.indexOf(h2hLeft) % PLAYER_COLORS.length]}
+                          />
+                          <Cell
+                            fill={PLAYER_COLORS[players.indexOf(h2hRight) % PLAYER_COLORS.length]}
+                          />
+                        </Pie>
+                        <Tooltip
+                          formatter={(v, name) => [`${v} win${Number(v) === 1 ? '' : 's'}`, name]}
+                          contentStyle={{
+                            background: '#020617',
+                            border: '1px solid #1f2937',
+                            borderRadius: 12,
+                            fontSize: 12
+                          }}
+                        />
+                        <Legend
+                          verticalAlign="bottom"
+                          height={28}
+                          wrapperStyle={{ fontSize: 10, paddingTop: 4 }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </>
+                )}
+              </H2HScoreArea>
             </ChartCard>
 
             <ChartCard>
-              <ChartTitle>Share of Total Points</ChartTitle>
-              <ChartMeta>Donut chart showing how the pot is split over time.</ChartMeta>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    dataKey="value"
-                    nameKey="name"
-                    innerRadius="55%"
-                    outerRadius="80%"
-                    paddingAngle={2}
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell key={`slice-${entry.name}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Legend
-                    verticalAlign="bottom"
-                    height={32}
-                    wrapperStyle={{ fontSize: 10, paddingTop: 4 }}
-                  />
-                  <Tooltip
-                    formatter={(value) => [`${value} pts`, 'Points']}
-                    contentStyle={{
-                      background: '#020617',
-                      border: '1px solid #1f2937',
-                      borderRadius: 12,
-                      fontSize: 12
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </ChartCard>
-
-            <ChartCard>
-              <ChartTitle>Cumulative Points Over Games</ChartTitle>
-              <ChartMeta>Line chart for the top 4 players as the league progresses.</ChartMeta>
-              <ResponsiveContainer width="100%" height="100%">
+              <ChartTitle>Cumulative Points by Night</ChartTitle>
+              <ChartMeta>
+                Running totals after each night (all {players.length} players). Axis shows Night 1–
+                {cumulativeChartMaxNight} from your data ({cumulativeChartMaxNight} night
+                {cumulativeChartMaxNight === 1 ? '' : 's'}).
+              </ChartMeta>
+              <ResponsiveContainer width="100%" height="100%" minHeight={500}>
                 <LineChart
                   data={cumulativeLineData}
-                  margin={{ top: 10, right: 16, left: -6, bottom: 4 }}
+                  margin={{ top: 10, right: 16, left: 0, bottom: 36 }}
                 >
-                  <XAxis dataKey="game" tick={{ fill: '#9ca3af', fontSize: 10 }} />
-                  <YAxis tick={{ fill: '#9ca3af', fontSize: 10 }} />
+                  <XAxis
+                    dataKey="night"
+                    tick={{ fill: '#9ca3af', fontSize: 9 }}
+                    angle={-40}
+                    textAnchor="end"
+                    height={54}
+                    interval={0}
+                    axisLine={{ stroke: '#475569' }}
+                    tickLine={{ stroke: '#475569' }}
+                  />
+                  <YAxis
+                    domain={[0, cumulativeChartMaxY]}
+                    ticks={Array.from(
+                      { length: Math.floor(cumulativeChartMaxY / 10) + 1 },
+                      (_, i) => i * 10
+                    )}
+                    tick={{ fill: '#94a3b8', fontSize: 10 }}
+                    tickLine={{ stroke: '#475569' }}
+                    axisLine={{ stroke: '#475569' }}
+                    width={48}
+                    allowDecimals={false}
+                  />
                   <Tooltip
                     contentStyle={{
                       background: '#020617',
@@ -720,156 +1065,40 @@ const App = () => {
                       fontSize: 12
                     }}
                   />
-                  {sortedStats.slice(0, 4).map((player, index) => (
+                  <Legend
+                    verticalAlign="bottom"
+                    align="center"
+                    layout="horizontal"
+                    height={72}
+                    iconType="circle"
+                    iconSize={8}
+                    wrapperStyle={{
+                      paddingTop: 8,
+                      fontSize: 10,
+                      color: '#e2e8f0',
+                      lineHeight: 1.5,
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      justifyContent: 'center',
+                      gap: '4px 12px',
+                      maxHeight: 68,
+                      overflowY: 'auto'
+                    }}
+                  />
+                  {players.map((name, index) => (
                     <Line
-                      key={player.name}
+                      key={name}
                       type="monotone"
-                      dataKey={player.name}
-                      name={player.name}
+                      dataKey={name}
+                      name={name}
                       stroke={PLAYER_COLORS[index % PLAYER_COLORS.length]}
-                      strokeWidth={2}
+                      strokeWidth={1}
                       dot={false}
-                      activeDot={{ r: 4 }}
+                      activeDot={{ r: 6 }}
+                      connectNulls
                     />
                   ))}
                 </LineChart>
-              </ResponsiveContainer>
-            </ChartCard>
-
-            <ChartCard>
-              <ChartTitle>Participation & Pot Size</ChartTitle>
-              <ChartMeta>Area chart of games played and total points awarded per game.</ChartMeta>
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={potDistribution.map((game, index) => ({
-                    game: `G${index + 1}`,
-                    totalPot: game.totalPot,
-                    avgGamesPlayed:
-                      players.filter((name) => games[index].pointsByPlayer[name] !== 'x').length
-                  }))}
-                  margin={{ top: 10, right: 16, left: -6, bottom: 4 }}
-                >
-                  <XAxis dataKey="game" tick={{ fill: '#9ca3af', fontSize: 10 }} />
-                  <YAxis tick={{ fill: '#9ca3af', fontSize: 10 }} />
-                  <Tooltip
-                    contentStyle={{
-                      background: '#020617',
-                      border: '1px solid #1f2937',
-                      borderRadius: 12,
-                      fontSize: 12
-                    }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="totalPot"
-                    name="Total points paid"
-                    stroke="#22c55e"
-                    fill="rgba(34, 197, 94, 0.35)"
-                    strokeWidth={2}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="avgGamesPlayed"
-                    name="Players present"
-                    stroke="#3b82f6"
-                    fill="rgba(59, 130, 246, 0.3)"
-                    strokeWidth={2}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </ChartCard>
-
-            <ChartCard>
-              <ChartTitle>Points per night</ChartTitle>
-              <ChartMeta>Total points awarded each night (by dayId).</ChartMeta>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={pointsByDay}
-                  margin={{ top: 10, right: 10, left: -16, bottom: 4 }}
-                >
-                  <XAxis dataKey="day" tick={{ fill: '#9ca3af', fontSize: 10 }} />
-                  <YAxis tick={{ fill: '#9ca3af', fontSize: 10 }} />
-                  <Tooltip
-                    contentStyle={{
-                      background: '#020617',
-                      border: '1px solid #1f2937',
-                      borderRadius: 12,
-                      fontSize: 12
-                    }}
-                    formatter={(value, name) => {
-                      if (name === 'gamesCount') return [value, 'Games'];
-                      return [value, 'Total points'];
-                    }}
-                    labelFormatter={(label, payload) =>
-                      payload?.[0] ? `${label} (${payload[0].payload.gamesCount} games)` : label
-                    }
-                  />
-                  <Bar dataKey="totalPoints" fill="#22c55e" radius={[6, 6, 0, 0]} name="Total points" />
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartCard>
-
-            <ChartCard>
-              <ChartTitle>Points by player per night</ChartTitle>
-              <ChartMeta>Stacked bar: each player&apos;s points per night.</ChartMeta>
-              <NightDropdownWrap ref={nightsDropdownRef}>
-                <NightSelectButton type="button" onClick={() => setNightsDropdownOpen((o) => !o)}>
-                  <span>Nights: {nightButtonLabel}</span>
-                </NightSelectButton>
-                {nightsDropdownOpen && (
-                  <NightDropdownPanel>
-                    <NightOption>
-                      <input
-                        type="checkbox"
-                        checked={selectedNightIds.length === 0}
-                        onChange={selectAllNights}
-                      />
-                      <span>All nights</span>
-                    </NightOption>
-                    {nightIds.map((dayId) => (
-                      <NightOption key={dayId}>
-                        <input
-                          type="checkbox"
-                          checked={selectedNightIds.length === 0 || selectedNightIds.includes(dayId)}
-                          onChange={() => toggleNight(dayId)}
-                        />
-                        <span>Night {dayId}</span>
-                      </NightOption>
-                    ))}
-                  </NightDropdownPanel>
-                )}
-              </NightDropdownWrap>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={filteredPointsByDayByPlayer}
-                  margin={{ top: 10, right: 10, left: -16, bottom: 4 }}
-                >
-                  <XAxis dataKey="day" tick={{ fill: '#9ca3af', fontSize: 10 }} />
-                  <YAxis tick={{ fill: '#9ca3af', fontSize: 10 }} />
-                  <Tooltip
-                    contentStyle={{
-                      background: '#020617',
-                      border: '1px solid #1f2937',
-                      borderRadius: 12,
-                      fontSize: 12
-                    }}
-                  />
-                  <Legend
-                    verticalAlign="bottom"
-                    height={36}
-                    wrapperStyle={{ fontSize: 9 }}
-                  />
-                  {players.map((name, index) => (
-                    <Bar
-                      key={name}
-                      dataKey={name}
-                      stackId="night"
-                      fill={PLAYER_COLORS[index % PLAYER_COLORS.length]}
-                      radius={index === players.length - 1 ? [6, 6, 0, 0] : 0}
-                      name={name}
-                    />
-                  ))}
-                </BarChart>
               </ResponsiveContainer>
             </ChartCard>
           </ChartsGrid>
