@@ -11,7 +11,9 @@ import {
   Cell,
   Legend,
   LineChart,
-  Line
+  Line,
+  BarChart,
+  Bar
 } from 'recharts';
 
 const TOTAL_TOURNAMENT_NIGHTS = 15;
@@ -84,6 +86,7 @@ const Layout = styled.main`
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.7fr);
   gap: 24px;
+  align-items: start;
 
   @media (max-width: 960px) {
     grid-template-columns: minmax(0, 1fr);
@@ -248,6 +251,21 @@ const ChartsGrid = styled.div`
   @media (max-width: 640px) {
     grid-auto-rows: minmax(240px, auto);
   }
+`;
+
+const NightStandingsToolbar = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+`;
+
+const NightStandingsLabel = styled.span`
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 `;
 
 const ChartCard = styled(Card)`
@@ -713,6 +731,10 @@ const App = () => {
     () => chartSortedPlayers[1]?.name ?? players[1]
   );
 
+  const [standingsNightId, setStandingsNightId] = useState(() =>
+    games.length === 0 ? 1 : Math.max(1, ...games.map((g) => g.dayId ?? 1))
+  );
+
   const [tableSortKey, setTableSortKey] = useState('total');
   const [tableSortDir, setTableSortDir] = useState('desc');
 
@@ -752,6 +774,34 @@ const App = () => {
     () => countHeadToHead(h2hLeft, h2hRight),
     [h2hLeft, h2hRight]
   );
+
+  const { standingsNightBarData, standingsNightGameCount, standingsNightBarMax } = useMemo(() => {
+    const nightGames = games.filter((g) => (g.dayId ?? 1) === standingsNightId);
+    const rows = players
+      .map((name) => {
+        let pts = 0;
+        let gamesPlayedThatNight = 0;
+        nightGames.forEach((game) => {
+          const v = game.pointsByPlayer[name];
+          if (typeof v === 'number') {
+            pts += v;
+            gamesPlayedThatNight += 1;
+          }
+        });
+        return { name, pts, gamesPlayedThatNight };
+      })
+      .filter((r) => r.gamesPlayedThatNight >= 1)
+      .map(({ name, pts }) => ({ name, pts }));
+    // Low → high in data; YAxis reversed so highest pts appear at top, lowest at bottom.
+    const sortedLowToHigh = [...rows].sort((a, b) => a.pts - b.pts || a.name.localeCompare(b.name));
+    const maxPts = sortedLowToHigh.reduce((m, r) => Math.max(m, r.pts), 0);
+    const standingsNightBarMax = Math.max(7, Math.ceil(maxPts / 2) * 2);
+    return {
+      standingsNightBarData: sortedLowToHigh,
+      standingsNightGameCount: nightGames.length,
+      standingsNightBarMax
+    };
+  }, [standingsNightId]);
 
   const filteredPointsByDayByPlayer =
     selectedNightIds.length === 0
@@ -1033,7 +1083,7 @@ const App = () => {
               <ResponsiveContainer width="100%" height="100%" minHeight={500}>
                 <LineChart
                   data={cumulativeLineData}
-                  margin={{ top: 10, right: 16, left: 0, bottom: 36 }}
+                  margin={{ top: 10, right: 6, left: -10, bottom: 36 }}
                 >
                   <XAxis
                     dataKey="night"
@@ -1100,6 +1150,123 @@ const App = () => {
                   ))}
                 </LineChart>
               </ResponsiveContainer>
+            </ChartCard>
+
+            <ChartCard>
+              <ChartTitle>Night standings</ChartTitle>
+              <ChartMeta>
+                Total points that night (all games). Only players who played at least one game appear;
+                absent nights are omitted. Best score at the top.
+              </ChartMeta>
+              <NightStandingsToolbar>
+                <NightStandingsLabel>Night</NightStandingsLabel>
+                <FilterSelect
+                  value={String(standingsNightId)}
+                  onChange={(e) => setStandingsNightId(Number(e.target.value))}
+                  aria-label="Night for standings chart"
+                >
+                  {Array.from({ length: cumulativeChartMaxNight }, (_, i) => i + 1).map((n) => (
+                    <option key={n} value={String(n)}>
+                      Night {n}
+                    </option>
+                  ))}
+                </FilterSelect>
+                <NightStandingsLabel style={{ marginLeft: '4px' }}>
+                  {standingsNightGameCount} game{standingsNightGameCount === 1 ? '' : 's'}
+                </NightStandingsLabel>
+              </NightStandingsToolbar>
+              {standingsNightGameCount === 0 ? (
+                <ChartMeta>No games recorded for this night yet.</ChartMeta>
+              ) : standingsNightBarData.length === 0 ? (
+                <ChartMeta>No players recorded as playing this night.</ChartMeta>
+              ) : (
+                <ResponsiveContainer width="100%" minHeight={340} height={360}>
+                  <BarChart
+                    layout="vertical"
+                    data={standingsNightBarData}
+                    margin={{ top: 4, right: 12, left: 0, bottom: 4 }}
+                  >
+                    <XAxis
+                      type="number"
+                      domain={[0, standingsNightBarMax]}
+                      tick={{ fill: '#94a3b8', fontSize: 10 }}
+                      axisLine={{ stroke: '#475569' }}
+                      tickLine={{ stroke: '#475569' }}
+                    />
+                    <YAxis
+                      type="category"
+                      dataKey="name"
+                      width={78}
+                      tick={{ fill: '#e2e8f0', fontSize: 11 }}
+                      axisLine={false}
+                      tickLine={false}
+                      reversed
+                    />
+                    <Tooltip
+                      cursor={{ fill: 'rgba(148, 163, 184, 0.12)' }}
+                      content={({ active, payload }) => {
+                        if (!active || !payload?.length) return null;
+                        const row = payload[0].payload;
+                        const n = row.pts;
+                        return (
+                          <div
+                            style={{
+                              background: '#0f172a',
+                              border: '1px solid #475569',
+                              borderRadius: 12,
+                              padding: '12px 16px',
+                              boxShadow: '0 12px 28px rgba(0,0,0,0.45)'
+                            }}
+                          >
+                            <div
+                              style={{
+                                color: '#e2e8f0',
+                                fontWeight: 700,
+                                fontSize: 13,
+                                marginBottom: 8
+                              }}
+                            >
+                              {row.name}
+                            </div>
+                            <div style={{ color: '#94a3b8', fontSize: 11, marginBottom: 4 }}>
+                              Points this night
+                            </div>
+                            <div
+                              style={{
+                                color: '#facc15',
+                                fontSize: 22,
+                                fontWeight: 800,
+                                lineHeight: 1,
+                                fontVariantNumeric: 'tabular-nums'
+                              }}
+                            >
+                              {n}
+                              <span
+                                style={{
+                                  fontSize: 13,
+                                  fontWeight: 600,
+                                  color: '#cbd5e1',
+                                  marginLeft: 6
+                                }}
+                              >
+                                {n === 1 ? 'pt' : 'pts'}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      }}
+                    />
+                    <Bar dataKey="pts" radius={[0, 6, 6, 0]} name="Points">
+                      {standingsNightBarData.map((row) => (
+                        <Cell
+                          key={row.name}
+                          fill={PLAYER_COLORS[players.indexOf(row.name) % PLAYER_COLORS.length]}
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             </ChartCard>
           </ChartsGrid>
         </div>
