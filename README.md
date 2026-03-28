@@ -39,88 +39,51 @@ npm run preview
 
 ---
 
-## Deploy to GitHub Pages (step by step)
+## Deploy to GitHub Pages
 
-Your **source code** stays on **`main`**. The recommended approach is **GitHub Actions**: every push to **`main`** builds the site on GitHub’s servers and publishes it. That avoids Windows issues with the local **`gh-pages`** tool (see below).
+Code lives on **`main`**. The **`npm run deploy`** script builds the app and publishes **`dist`** to the **`gh-pages`** branch (via the **`gh-pages`** package).
 
-### Before you start
+### 1. Base path
 
-1. A **GitHub repository** for this project (for example `https://github.com/YOUR_USERNAME/fun-activity-nights`).
-2. **`vite.config.js`** → **`GITHUB_PAGES_BASE`** must be `/<repository-name>/` (default is `/fun-activity-nights/`). If your repo name differs, change it and commit.
+In **`vite.config.js`**, set **`GITHUB_PAGES_BASE`** to `/<your-repo-name>/` (default **`/fun-activity-nights/`**). It must match the repository name in the URL  
+`https://YOUR_USERNAME.github.io/<repo-name>/`.
 
----
-
-### Recommended: deploy with GitHub Actions
-
-#### Step 1 — Add the workflow (already in this repo)
-
-The file **`.github/workflows/deploy-github-pages.yml`** runs on every push to **`main`** (and can be run manually under **Actions** → **Deploy to GitHub Pages** → **Run workflow**).
-
-Commit and push it if you have not yet:
-
-```bash
-git add .github/workflows/deploy-github-pages.yml
-git commit -m "Add GitHub Pages deploy workflow"
-git push origin main
-```
-
-#### Step 2 — Enable GitHub Pages (Actions as source)
-
-1. On GitHub, open the repository.
-2. **Settings** → **Pages**.
-3. Under **Build and deployment** → **Source**, select **GitHub Actions** (not “Deploy from a branch”).
-4. Save if prompted. The first workflow run may ask you to approve the **`github-pages`** environment once.
-
-#### Step 3 — Wait for the workflow
-
-1. Open the **Actions** tab and open the latest **Deploy to GitHub Pages** run.
-2. When both **build** and **deploy** are green, the site is live (often within **1–2 minutes**).
-
-#### Step 4 — Open the site
-
-```text
-https://YOUR_USERNAME.github.io/fun-activity-nights/
-```
-
-Use your GitHub username and your real repo name in the path.
-
-#### Updating the site
-
-Push any change to **`main`**; the workflow deploys again automatically. You can also trigger **Run workflow** from the Actions tab.
-
----
-
-### Optional: local `npm run deploy` (macOS / Linux, or WSL)
+### 2. Deploy from your machine
 
 ```bash
 npm install
 npm run deploy
 ```
 
-That runs **`vite build`** and pushes **`dist`** to the **`gh-pages`** branch using the **`gh-pages`** package.
+Use Git credentials that can push to the repo. If **`spawn ENAMETOOLONG`** appears on **Windows**, try **WSL**, **Git Bash**, or a **shorter folder path** (e.g. `C:\dev\fun-activity-nights`).
 
-On **Windows**, this often fails with **`Error: spawn ENAMETOOLONG`** because the OS limits how long a single command line can be. **Use GitHub Actions instead**, or run **`npm run deploy`** from **WSL** or **Git Bash** with the repo in a **short path** (for example `C:\dev\fun-activity-nights`).
+### 3. GitHub Pages settings
 
-If you use the **`gh-pages`** branch method, set **Settings** → **Pages** → **Source** to **Deploy from branch** → **`gh-pages`** / **(root)** — not needed when using **GitHub Actions**.
+**Settings** → **Pages** → **Source**: **Deploy from a branch** → **`gh-pages`** → **`/ (root)`** → Save.
 
----
+### 4. Site URL
+
+```text
+https://YOUR_USERNAME.github.io/fun-activity-nights/
+```
+
+### 5. After you change the app
+
+Commit and push to **`main`**, then run **`npm run deploy`** again.
 
 ### Troubleshooting
 
 | Problem | What to check |
 |--------|----------------|
-| **Blank page** on Pages | **`vite.config.js`** → `GITHUB_PAGES_BASE` = `/<exact-repo-name>/`. Fix, push to **main**, wait for Actions. |
-| **`spawn ENAMETOOLONG`** on `npm run deploy` | Windows command-line limit. Use **GitHub Actions** or **WSL** / shorter path. |
-| **Workflow fails** | **Actions** tab → open the failed job → read logs. Often **`npm ci`** needs a committed **`package-lock.json`**. |
-| **Pages shows “Get started”** | **Settings** → **Pages** → set **Source** to **GitHub Actions**. |
-| **Old version in browser** | Hard refresh (Ctrl+F5); wait a minute after a green deploy. |
+| **Blank page** | Wrong **`GITHUB_PAGES_BASE`** in **`vite.config.js`**; rebuild and **`npm run deploy`**. |
+| **`spawn ENAMETOOLONG`** | Common on Windows with **`gh-pages`**; WSL, shorter path, or your usual deploy method. |
+| **Push / auth errors** | Remote URL and GitHub login (**`gh auth login`**, PAT, or SSH). |
 
 ---
 
 ### Project structure
 
-- `package.json` – dependencies and scripts (`deploy` uses `gh-pages`; optional on Windows)
-- `.github/workflows/deploy-github-pages.yml` – **recommended** Pages deploy via GitHub Actions
+- `package.json` – scripts including **`deploy`** (`gh-pages`)
 - `vite.config.js` – Vite + React config; **`GITHUB_PAGES_BASE`** for GitHub Pages
 - `index.html` – root HTML shell
 - `src/main.jsx` – React entry point
