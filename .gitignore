@@ -1,5 +1,6 @@
-# Dependencies
+# Dependencies — ignore every node_modules tree (root or nested)
 node_modules/
+**/node_modules/
 
 # Build output (regenerate with npm run build)
 dist/
