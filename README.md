@@ -11,7 +11,6 @@ It uses **Vite**, **styled-components**, and **Recharts** to show standings, tot
 
 ### Domain rules
 
-- Players: Antonio, Amiklat, Ardit, Arber, Ervir, Elvis, Duli, Denis, Landi, Gesti.
 - Each game gives:
   - 4 points to the **winner**
   - 2 points to **second**
