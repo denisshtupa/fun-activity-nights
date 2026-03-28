@@ -1,0 +1,29 @@
+# Dependencies — ignore every node_modules tree (root or nested)
+node_modules/
+**/node_modules/
+
+# Build output (regenerate with npm run build)
+dist/
+
+# Local env / secrets
+.env
+.env.local
+.env.*.local
+
+# Logs & debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Vite
+*.local
