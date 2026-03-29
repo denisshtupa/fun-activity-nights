@@ -22,6 +22,7 @@ import {
 import {
   computePlayerStats,
   comparePlayersForTable,
+  compareTotalThenPodiumsThenPpg,
   TABLE_SORT_DEFAULTS
 } from '../pokerStats';
 
@@ -46,7 +47,7 @@ export function OverallStandingsCard() {
   };
 
   const chartSortedPlayers = useMemo(
-    () => [...playerStats].sort((a, b) => b.totalPoints - a.totalPoints || b.wins - a.wins),
+    () => [...playerStats].sort((a, b) => -compareTotalThenPodiumsThenPpg(a, b)),
     [playerStats]
   );
 

@@ -99,6 +99,18 @@ export function countHeadToHead(playerA, playerB) {
   return { winsA, winsB, ties, gamesCompared: winsA + winsB + ties };
 }
 
+/** Ascending-style diff: higher totals / podiums / PPG sort later unless negated for desc. */
+export function compareTotalThenPodiumsThenPpg(a, b) {
+  return (
+    a.totalPoints - b.totalPoints ||
+    a.wins - b.wins ||
+    a.seconds - b.seconds ||
+    a.thirds - b.thirds ||
+    a.avgPoints - b.avgPoints ||
+    a.name.localeCompare(b.name)
+  );
+}
+
 export function comparePlayersForTable(a, b, sortKey, sortDir) {
   const flip = sortDir === 'asc' ? 1 : -1;
   if (sortKey === 'name') {
@@ -108,7 +120,7 @@ export function comparePlayersForTable(a, b, sortKey, sortDir) {
   let cmp = 0;
   switch (sortKey) {
     case 'total':
-      cmp = a.totalPoints - b.totalPoints || a.wins - b.wins;
+      cmp = compareTotalThenPodiumsThenPpg(a, b);
       break;
     case 'gamesPlayed':
       cmp = a.gamesPlayed - b.gamesPlayed || a.totalPoints - b.totalPoints;
