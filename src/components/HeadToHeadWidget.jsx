@@ -102,12 +102,44 @@ export function HeadToHeadWidget() {
                   <Cell fill={PLAYER_COLORS[players.indexOf(h2hRight) % PLAYER_COLORS.length]} />
                 </Pie>
                 <Tooltip
-                  formatter={(v, name) => [`${v} win${Number(v) === 1 ? '' : 's'}`, name]}
-                  contentStyle={{
-                    background: '#020617',
-                    border: '1px solid #1f2937',
-                    borderRadius: 12,
-                    fontSize: 12
+                  cursor={false}
+                  content={({ active, payload }) => {
+                    if (!active || !payload?.length) return null;
+                    const row = payload[0];
+                    const n = Number(row.value);
+                    const winsLabel = `${n} win${n === 1 ? '' : 's'}`;
+                    return (
+                      <div
+                        style={{
+                          background: '#0f172a',
+                          border: '1px solid #475569',
+                          borderRadius: 12,
+                          padding: '10px 14px',
+                          boxShadow: '0 12px 28px rgba(0,0,0,0.45)'
+                        }}
+                      >
+                        <div
+                          style={{
+                            color: '#e2e8f0',
+                            fontWeight: 700,
+                            fontSize: 13,
+                            marginBottom: 6
+                          }}
+                        >
+                          {row.name}
+                        </div>
+                        <div
+                          style={{
+                            color: '#facc15',
+                            fontSize: 18,
+                            fontWeight: 700,
+                            fontVariantNumeric: 'tabular-nums'
+                          }}
+                        >
+                          {winsLabel}
+                        </div>
+                      </div>
+                    );
                   }}
                 />
                 <Legend

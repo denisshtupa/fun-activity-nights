@@ -63,11 +63,86 @@ export function CumulativePointsByNightWidget() {
             allowDecimals={false}
           />
           <Tooltip
-            contentStyle={{
-              background: '#020617',
-              border: '1px solid #1f2937',
-              borderRadius: 12,
-              fontSize: 12
+            content={({ active, label, payload }) => {
+              if (!active || !payload?.length) return null;
+              const sorted = [...payload].sort((a, b) => {
+                const va = Number(a.value);
+                const vb = Number(b.value);
+                const na = Number.isFinite(va) ? va : 0;
+                const nb = Number.isFinite(vb) ? vb : 0;
+                if (nb !== na) return nb - na;
+                return String(a.name ?? a.dataKey).localeCompare(String(b.name ?? b.dataKey));
+              });
+              return (
+                <div
+                  style={{
+                    background: '#0f172a',
+                    border: '1px solid #475569',
+                    borderRadius: 12,
+                    padding: '12px 14px',
+                    boxShadow: '0 12px 28px rgba(0,0,0,0.45)',
+                    minWidth: 160
+                  }}
+                >
+                  <div
+                    style={{
+                      color: '#94a3b8',
+                      fontSize: 11,
+                      fontWeight: 600,
+                      marginBottom: 10,
+                      letterSpacing: '0.02em'
+                    }}
+                  >
+                    {label}
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 6
+                    }}
+                  >
+                    {sorted.map((entry) => {
+                      const pts = entry.value;
+                      const n = Number(pts);
+                      const text =
+                        pts == null || pts === '' || !Number.isFinite(n)
+                          ? '—'
+                          : `${n} pt${n === 1 ? '' : 's'}`;
+                      return (
+                        <div
+                          key={String(entry.dataKey)}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: 16,
+                            fontSize: 12
+                          }}
+                        >
+                          <span
+                            style={{
+                              color: entry.color ?? '#e2e8f0',
+                              fontWeight: 600
+                            }}
+                          >
+                            {entry.name}
+                          </span>
+                          <span
+                            style={{
+                              color: '#e2e8f0',
+                              fontVariantNumeric: 'tabular-nums',
+                              fontWeight: 700
+                            }}
+                          >
+                            {text}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
             }}
           />
           <Legend

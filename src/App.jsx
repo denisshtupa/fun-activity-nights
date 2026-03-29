@@ -14,6 +14,7 @@ import { OverallStandingsCard } from './components/OverallStandingsCard';
 import { HeadToHeadWidget } from './components/HeadToHeadWidget';
 import { CumulativePointsByNightWidget } from './components/CumulativePointsByNightWidget';
 import { NightStandingsWidget } from './components/NightStandingsWidget';
+import { NightPodiumWidget } from './components/NightPodiumWidget';
 
 const App = () => {
   const nightsPlayed = useMemo(() => countNightsPlayed(), []);
@@ -41,6 +42,7 @@ const App = () => {
             <HeadToHeadWidget />
             <CumulativePointsByNightWidget />
             <NightStandingsWidget />
+            <NightPodiumWidget />
           </ChartsGrid>
         </div>
       </Layout>
