@@ -434,6 +434,87 @@ export const games = [
       Amiklat: 2,
       Denis: 0,
       Gesti: 1
+    },
+  },  
+    // Day 6 – 5 games (28 Mar)
+  {
+    id: 27,
+    dayId: 6,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 2,
+      Antonio: 1,
+      Ervir: 4,
+      Ardit: 0,
+      Elvis: 0,
+      Arber: 0,
+      Amiklat: 0,
+      Denis: 0,
+      Gesti: 0
+    },
+  },
+  {
+      id: 28,
+      dayId: 6,
+      pointsByPlayer: {
+        Landi: 1,
+        Duli: 0,
+        Antonio: 0,
+        Ervir: 0,
+        Ardit: 0,
+        Elvis: 4,
+        Arber: 0,
+        Amiklat: 0,
+        Denis: 0,
+        Gesti: 2
+      } ,
+    },
+    {
+      id: 29,
+      dayId: 6,
+      pointsByPlayer: {
+        Landi: 0,
+        Duli: 0,
+        Antonio: 0,
+        Ervir: 0,
+        Ardit: 4,
+        Elvis: 1,
+        Arber: 2,
+        Amiklat: 0,
+        Denis: 0,
+        Gesti: 0
+      }
+    },
+    {
+      id: 30,
+      dayId: 6,
+      pointsByPlayer: {
+        Landi: 0,
+        Duli: 1,
+        Antonio: 0,
+        Ervir: 2,
+        Ardit: 0,
+        Elvis: 0,
+        Arber: 4,
+        Amiklat: 0,
+        Denis: 0,
+        Gesti: 0
+      }
+    },
+    {
+      id: 31,
+      dayId: 6,
+      pointsByPlayer: {
+        Landi: 0,
+        Duli: 0,
+        Antonio: 0,
+        Ervir: 0,
+        Ardit: 0,
+        Elvis: 0,
+        Arber: 0,
+        Amiklat: 2,
+        Denis: 1,
+        Gesti: 4
+      }
     }
-  }
 ];
