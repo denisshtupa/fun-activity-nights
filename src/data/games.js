@@ -1,10 +1,10 @@
 export const players = [
   'Antonio',
-  'Amiklat',
+  'Klanti',
   'Ardit',
   'Arber',
   'Ervir',
-  'Elvis',
+  'Visi',
   'Duli',
   'Denis',
   'Landi',
@@ -25,9 +25,9 @@ export const games = [
       Antonio: 0,
       Ervir: 'x',
       Ardit: 'x',
-      Elvis: 'x',
+      Visi: 'x',
       Arber: 0,
-      Amiklat: 'x',
+      Klanti: 'x',
       Denis: 4,
       Gesti: 'x'
     }
@@ -41,9 +41,9 @@ export const games = [
       Antonio: 2,
       Ervir: 'x',
       Ardit: 'x',
-      Elvis: 'x',
+      Visi: 'x',
       Arber: 0,
-      Amiklat: 'x',
+      Klanti: 'x',
       Denis: 0,
       Gesti: 'x'
     }
@@ -57,9 +57,9 @@ export const games = [
       Antonio: 4,
       Ervir: 'x',
       Ardit: 'x',
-      Elvis: 'x',
+      Visi: 'x',
       Arber: 0,
-      Amiklat: 'x',
+      Klanti: 'x',
       Denis: 2,
       Gesti: 'x'
     }
@@ -73,9 +73,9 @@ export const games = [
       Antonio: 4,
       Ervir: 'x',
       Ardit: 'x',
-      Elvis: 'x',
+      Visi: 'x',
       Arber: 2,
-      Amiklat: 'x',
+      Klanti: 'x',
       Denis: 0,
       Gesti: 'x'
     }
@@ -89,9 +89,9 @@ export const games = [
       Antonio: 2,
       Ervir: 'x',
       Ardit: 'x',
-      Elvis: 'x',
+      Visi: 'x',
       Arber: 0,
-      Amiklat: 'x',
+      Klanti: 'x',
       Denis: 1,
       Gesti: 'x'
     }
@@ -106,9 +106,9 @@ export const games = [
       Antonio: 0,
       Ervir: 4,
       Ardit: 0,
-      Elvis: 0,
+      Visi: 0,
       Arber: 2,
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 0,
       Gesti: 1
     }
@@ -122,9 +122,9 @@ export const games = [
       Antonio: 0,
       Ervir: 0,
       Ardit: 2,
-      Elvis: 0,
+      Visi: 0,
       Arber: 1,
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 0,
       Gesti: 0
     }
@@ -138,9 +138,9 @@ export const games = [
       Antonio: 1,
       Ervir: 0,
       Ardit: 0,
-      Elvis: 0,
+      Visi: 0,
       Arber: 4,
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 0,
       Gesti: 0
     }
@@ -154,9 +154,9 @@ export const games = [
       Antonio: 0,
       Ervir: 1,
       Ardit: 0,
-      Elvis: 4,
+      Visi: 4,
       Arber: 0,
-      Amiklat: 2,
+      Klanti: 2,
       Denis: 0,
       Gesti: 0
     }
@@ -170,9 +170,9 @@ export const games = [
       Antonio: 0,
       Ervir: 0,
       Ardit: 0,
-      Elvis: 2,
+      Visi: 2,
       Arber: 'x',
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 0,
       Gesti: 0
     }
@@ -187,9 +187,9 @@ export const games = [
       Antonio: 0,
       Ervir: 0,
       Ardit: 0,
-      Elvis: 0,
+      Visi: 0,
       Arber: 'x',
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 'x',
       Gesti: 2
     }
@@ -203,9 +203,9 @@ export const games = [
       Antonio: 0,
       Ervir: 4,
       Ardit: 2,
-      Elvis: 0,
+      Visi: 0,
       Arber: 'x',
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 'x',
       Gesti: 0
     }
@@ -219,9 +219,9 @@ export const games = [
       Antonio: 0,
       Ervir: 1,
       Ardit: 0,
-      Elvis: 0,
+      Visi: 0,
       Arber: 'x',
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 'x',
       Gesti: 2
     }
@@ -235,9 +235,9 @@ export const games = [
       Antonio: 0,
       Ervir: 0,
       Ardit: 4,
-      Elvis: 1,
+      Visi: 1,
       Arber: 'x',
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 'x',
       Gesti: 0
     }
@@ -251,9 +251,9 @@ export const games = [
       Antonio: 0,
       Ervir: 4,
       Ardit: 1,
-      Elvis: 0,
+      Visi: 0,
       Arber: 'x',
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 'x',
       Gesti: 2
     }
@@ -267,9 +267,9 @@ export const games = [
       Antonio: 0,
       Ervir: 0,
       Ardit: 0,
-      Elvis: 0,
+      Visi: 0,
       Arber: 'x',
-      Amiklat: 2,
+      Klanti: 2,
       Denis: 'x',
       Gesti: 0
     }
@@ -284,9 +284,9 @@ export const games = [
       Antonio: 2,
       Ervir: 'x',
       Ardit: 0,
-      Elvis: 1,
+      Visi: 1,
       Arber: 0,
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 'x',
       Gesti: 'x'
     }
@@ -300,9 +300,9 @@ export const games = [
       Antonio: 0,
       Ervir: 'x',
       Ardit: 0,
-      Elvis: 0,
+      Visi: 0,
       Arber: 0,
-      Amiklat: 4,
+      Klanti: 4,
       Denis: 'x',
       Gesti: 'x'
     }
@@ -316,9 +316,9 @@ export const games = [
       Antonio: 0,
       Ervir: 'x',
       Ardit: 0,
-      Elvis: 1,
+      Visi: 1,
       Arber: 2,
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 'x',
       Gesti: 'x'
     }
@@ -332,9 +332,9 @@ export const games = [
       Antonio: 0,
       Ervir: 'x',
       Ardit: 0,
-      Elvis: 0,
+      Visi: 0,
       Arber: 1,
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 'x',
       Gesti: 'x'
     }
@@ -348,9 +348,9 @@ export const games = [
       Antonio: 1,
       Ervir: 'x',
       Ardit: 0,
-      Elvis: 4,
+      Visi: 4,
       Arber: 0,
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 'x',
       Gesti: 'x'
     }
@@ -364,9 +364,9 @@ export const games = [
       Antonio: 0,
       Ervir: 'x',
       Ardit: 1,
-      Elvis: 0,
+      Visi: 0,
       Arber: 'x',
-      Amiklat: 2,
+      Klanti: 2,
       Denis: 'x',
       Gesti: 'x'
     }
@@ -380,9 +380,9 @@ export const games = [
       Antonio: 0,
       Ervir: 'x',
       Ardit: 4,
-      Elvis: 0,
+      Visi: 0,
       Arber: 'x',
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 'x',
       Gesti: 'x'
     }
@@ -397,9 +397,9 @@ export const games = [
       Antonio: 1,
       Ervir: 4,
       Ardit: 'x',
-      Elvis: 0,
+      Visi: 0,
       Arber: 0,
-      Amiklat: 2,
+      Klanti: 2,
       Denis: 0,
       Gesti: 0
     }
@@ -413,9 +413,9 @@ export const games = [
       Antonio: 0,
       Ervir: 2,
       Ardit: 'x',
-      Elvis: 0,
+      Visi: 0,
       Arber: 0,
-      Amiklat: 1,
+      Klanti: 1,
       Denis: 0,
       Gesti: 4
     }
@@ -429,9 +429,9 @@ export const games = [
       Antonio: 0,
       Ervir: 4,
       Ardit: 'x',
-      Elvis: 0,
+      Visi: 0,
       Arber: 0,
-      Amiklat: 2,
+      Klanti: 2,
       Denis: 0,
       Gesti: 1
     },
@@ -446,9 +446,9 @@ export const games = [
       Antonio: 1,
       Ervir: 4,
       Ardit: 0,
-      Elvis: 0,
+      Visi: 0,
       Arber: 0,
-      Amiklat: 0,
+      Klanti: 0,
       Denis: 0,
       Gesti: 0
     },
@@ -462,9 +462,9 @@ export const games = [
         Antonio: 0,
         Ervir: 0,
         Ardit: 0,
-        Elvis: 4,
+        Visi: 4,
         Arber: 0,
-        Amiklat: 0,
+        Klanti: 0,
         Denis: 0,
         Gesti: 2
       } ,
@@ -478,9 +478,9 @@ export const games = [
         Antonio: 0,
         Ervir: 0,
         Ardit: 4,
-        Elvis: 1,
+        Visi: 1,
         Arber: 2,
-        Amiklat: 0,
+        Klanti: 0,
         Denis: 0,
         Gesti: 0
       }
@@ -494,9 +494,9 @@ export const games = [
         Antonio: 0,
         Ervir: 2,
         Ardit: 0,
-        Elvis: 0,
+        Visi: 0,
         Arber: 4,
-        Amiklat: 0,
+        Klanti: 0,
         Denis: 0,
         Gesti: 0
       }
@@ -510,9 +510,9 @@ export const games = [
         Antonio: 0,
         Ervir: 0,
         Ardit: 0,
-        Elvis: 0,
+        Visi: 0,
         Arber: 0,
-        Amiklat: 2,
+        Klanti: 2,
         Denis: 1,
         Gesti: 4
       }

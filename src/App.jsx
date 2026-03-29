@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { TOTAL_TOURNAMENT_NIGHTS } from './constants';
+import React, { useMemo, useState } from 'react';
+import { DASHBOARD_AUTH_STORAGE_KEY, TOTAL_TOURNAMENT_NIGHTS } from './constants';
 import { countNightsPlayed } from './pokerStats';
 import {
   AppContainer,
@@ -15,9 +15,23 @@ import { HeadToHeadWidget } from './components/HeadToHeadWidget';
 import { CumulativePointsByNightWidget } from './components/CumulativePointsByNightWidget';
 import { NightStandingsWidget } from './components/NightStandingsWidget';
 import { NightPodiumWidget } from './components/NightPodiumWidget';
+import { LoginPage } from './components/LoginPage';
+
+const readStoredAuth = () => {
+  try {
+    return localStorage.getItem(DASHBOARD_AUTH_STORAGE_KEY) === '1';
+  } catch {
+    return false;
+  }
+};
 
 const App = () => {
+  const [authenticated, setAuthenticated] = useState(readStoredAuth);
   const nightsPlayed = useMemo(() => countNightsPlayed(), []);
+
+  if (!authenticated) {
+    return <LoginPage onSuccess={() => setAuthenticated(true)} />;
+  }
 
   return (
     <AppContainer>
