@@ -136,6 +136,22 @@ export function OverallStandingsCard() {
                   </SortGlyph>
                 </ThInner>
               </SortableTh>
+              <SortableTh scope="col" onClick={() => handleTableSort('rfCount')}>
+                <ThInner>
+                  RF
+                  <SortGlyph $active={tableSortKey === 'rfCount'}>
+                    {tableSortKey === 'rfCount' ? (tableSortDir === 'asc' ? '↑' : '↓') : '↕'}
+                  </SortGlyph>
+                </ThInner>
+              </SortableTh>
+              <SortableTh scope="col" onClick={() => handleTableSort('sfCount')}>
+                <ThInner>
+                  SF
+                  <SortGlyph $active={tableSortKey === 'sfCount'}>
+                    {tableSortKey === 'sfCount' ? (tableSortDir === 'asc' ? '↑' : '↓') : '↕'}
+                  </SortGlyph>
+                </ThInner>
+              </SortableTh>
             </Tr>
           </thead>
           <tbody>
@@ -155,6 +171,8 @@ export function OverallStandingsCard() {
                 <Td>{player.seconds}</Td>
                 <Td>{player.thirds}</Td>
                 <Td>{player.avgPoints.toFixed(2)}</Td>
+                <Td>{player.rfCount}</Td>
+                <Td>{player.sfCount}</Td>
               </Tr>
             ))}
           </tbody>

@@ -1,4 +1,68 @@
 import { players, games } from './data/games.js';
+import { RF_BONUS_POINTS, SF_BONUS_POINTS } from './constants.js';
+
+/** Resolved RF/SF winners for a game (player names or null). Ignores unknown names. */
+export function getHandBonusesNormalized(game) {
+  const hb = game.handBonuses;
+  if (hb && typeof hb === 'object') {
+    const RF =
+      typeof hb.RF === 'string' && hb.RF !== 'x' && players.includes(hb.RF) ? hb.RF : null;
+    const SF =
+      typeof hb.SF === 'string' && hb.SF !== 'x' && players.includes(hb.SF) ? hb.SF : null;
+    return { RF, SF };
+  }
+  const legRf = game.RF;
+  const legSf = game.SF;
+  return {
+    RF:
+      typeof legRf === 'string' && legRf !== 'x' && players.includes(legRf) ? legRf : null,
+    SF:
+      typeof legSf === 'string' && legSf !== 'x' && players.includes(legSf) ? legSf : null
+  };
+}
+
+function playerWasPresentInGame(game, name) {
+  return game.pointsByPlayer[name] !== 'x';
+}
+
+/** Hand bonus points for one player in one game (0, 5, 10, or 15 if both — unusual). */
+export function getPlayerHandBonusForGame(game, name) {
+  if (!playerWasPresentInGame(game, name)) return 0;
+  const { RF, SF } = getHandBonusesNormalized(game);
+  let pts = 0;
+  if (RF === name) pts += RF_BONUS_POINTS;
+  if (SF === name) pts += SF_BONUS_POINTS;
+  return pts;
+}
+
+/** Every recorded RF/SF with game id, night, player, and points (eligibility applied). */
+export function buildHandBonusEvents() {
+  const events = [];
+  games.forEach((game) => {
+    const { RF, SF } = getHandBonusesNormalized(game);
+    const id = game.id;
+    const dayId = game.dayId ?? 1;
+    if (RF && playerWasPresentInGame(game, RF)) {
+      events.push({
+        gameId: id,
+        dayId,
+        type: 'RF',
+        player: RF,
+        points: RF_BONUS_POINTS
+      });
+    }
+    if (SF && playerWasPresentInGame(game, SF)) {
+      events.push({
+        gameId: id,
+        dayId,
+        type: 'SF',
+        player: SF,
+        points: SF_BONUS_POINTS
+      });
+    }
+  });
+  return events;
+}
 
 export function computePlayerStats() {
   return players.map((name) => {
@@ -7,16 +71,22 @@ export function computePlayerStats() {
     let wins = 0;
     let seconds = 0;
     let thirds = 0;
+    let rfCount = 0;
+    let sfCount = 0;
 
     games.forEach((game) => {
       const value = game.pointsByPlayer[name];
       if (value === 'x') return;
       gamesPlayed += 1;
       const numeric = typeof value === 'number' ? value : 0;
-      totalPoints += numeric;
+      totalPoints += numeric + getPlayerHandBonusForGame(game, name);
       if (numeric === 4) wins += 1;
       else if (numeric === 2) seconds += 1;
       else if (numeric === 1) thirds += 1;
+
+      const { RF, SF } = getHandBonusesNormalized(game);
+      if (RF === name) rfCount += 1;
+      if (SF === name) sfCount += 1;
     });
 
     const avgPoints = gamesPlayed ? totalPoints / gamesPlayed : 0;
@@ -28,6 +98,8 @@ export function computePlayerStats() {
       wins,
       seconds,
       thirds,
+      rfCount,
+      sfCount,
       avgPoints: Number(avgPoints.toFixed(2))
     };
   });
@@ -51,6 +123,7 @@ export function buildCumulativeLineDataByNight() {
         nightGames.forEach((game) => {
           const v = game.pointsByPlayer[name];
           if (typeof v === 'number') add += v;
+          add += getPlayerHandBonusForGame(game, name);
         });
         cumulative[name] += add;
       });
@@ -74,6 +147,8 @@ export const TABLE_SORT_DEFAULTS = {
   wins: 'desc',
   seconds: 'desc',
   thirds: 'desc',
+  rfCount: 'desc',
+  sfCount: 'desc',
   avgPoints: 'desc'
 };
 
@@ -133,6 +208,12 @@ export function comparePlayersForTable(a, b, sortKey, sortDir) {
       break;
     case 'thirds':
       cmp = a.thirds - b.thirds || a.totalPoints - b.totalPoints;
+      break;
+    case 'rfCount':
+      cmp = a.rfCount - b.rfCount || a.totalPoints - b.totalPoints;
+      break;
+    case 'sfCount':
+      cmp = a.sfCount - b.sfCount || a.totalPoints - b.totalPoints;
       break;
     case 'avgPoints':
       cmp = a.avgPoints - b.avgPoints || a.gamesPlayed - b.gamesPlayed;

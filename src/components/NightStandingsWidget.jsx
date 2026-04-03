@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { players, games } from '../data/games.js';
 import { PLAYER_COLORS } from '../constants';
-import { getMaxNightFromGames } from '../pokerStats';
+import { getMaxNightFromGames, getPlayerHandBonusForGame } from '../pokerStats';
 import {
   ChartCard,
   ChartTitle,
@@ -26,7 +26,7 @@ export function NightStandingsWidget() {
         nightGames.forEach((game) => {
           const v = game.pointsByPlayer[name];
           if (typeof v === 'number') {
-            pts += v;
+            pts += v + getPlayerHandBonusForGame(game, name);
             gamesPlayedThatNight += 1;
           }
         });

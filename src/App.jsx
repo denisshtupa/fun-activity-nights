@@ -8,6 +8,7 @@ import {
   Title,
   Badge,
   Layout,
+  ChartsSection,
   ChartsGrid
 } from './components/dashboardStyles';
 import { OverallStandingsCard } from './components/OverallStandingsCard';
@@ -15,7 +16,9 @@ import { HeadToHeadWidget } from './components/HeadToHeadWidget';
 import { CumulativePointsByNightWidget } from './components/CumulativePointsByNightWidget';
 import { NightStandingsWidget } from './components/NightStandingsWidget';
 import { NightPodiumWidget } from './components/NightPodiumWidget';
+import { HandBonusesWidget } from './components/HandBonusesWidget';
 import { LoginPage } from './components/LoginPage';
+import { Rules } from './components/Rules';
 
 const readStoredAuth = () => {
   try {
@@ -51,15 +54,18 @@ const App = () => {
       <Layout>
         <OverallStandingsCard />
 
-        <div>
+        <ChartsSection>
           <ChartsGrid>
             <HeadToHeadWidget />
             <CumulativePointsByNightWidget />
             <NightStandingsWidget />
             <NightPodiumWidget />
+            <HandBonusesWidget />
           </ChartsGrid>
-        </div>
+        </ChartsSection>
       </Layout>
+
+      <Rules />
     </AppContainer>
   );
 };

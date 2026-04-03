@@ -14,6 +14,9 @@ export const PLAYER_COLORS = [
 
 export const TOTAL_TOURNAMENT_NIGHTS = 15;
 
+export const RF_BONUS_POINTS = 10;
+export const SF_BONUS_POINTS = 5;
+
 export const DASHBOARD_LOGIN_USERNAME = 'hidh_shume';
 export const DASHBOARD_LOGIN_PASSWORD = 'fito_shume';
 export const DASHBOARD_AUTH_STORAGE_KEY = 'poker-nights-dashboard-auth';

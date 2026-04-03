@@ -46,12 +46,61 @@ export const Badge = styled.span`
 
 export const Layout = styled.main`
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.7fr);
-  gap: 24px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
 
-  @media (max-width: 960px) {
-    grid-template-columns: minmax(0, 1fr);
+  @media (min-width: 640px) {
+    gap: 22px;
+  }
+
+  @media (min-width: 1024px) {
+    gap: 28px;
+  }
+`;
+
+/** Full-width region for chart widgets; responsive spacing across breakpoints. */
+export const ChartsSection = styled.div`
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  @media (min-width: 640px) {
+    gap: 14px;
+  }
+
+  @media (min-width: 1024px) {
+    gap: 16px;
+  }
+`;
+
+export const RulesSection = styled.section`
+  width: 100%;
+  min-width: 0;
+`;
+
+export const RulesList = styled.ol`
+  margin: 0;
+  padding-left: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: #e5e7eb;
+  font-size: 0.88rem;
+  line-height: 1.6;
+
+  li::marker {
+    font-weight: 700;
+    color: #94a3b8;
+  }
+
+  li strong {
+    font-weight: 800;
+    color: #f8fafc;
   }
 `;
 
@@ -99,7 +148,7 @@ export const StandingsTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   font-size: 0.84rem;
-  min-width: 560px;
+  min-width: 640px;
   background: #020617;
 `;
 
@@ -201,17 +250,24 @@ export const StatPill = styled.span`
 
 export const ChartsGrid = styled.div`
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  grid-auto-rows: minmax(260px, auto);
-  gap: 16px;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: minmax(232px, auto);
+  gap: 12px;
   align-items: stretch;
 
-  @media (max-width: 960px) {
-    grid-template-columns: minmax(0, 1fr);
+  /* medium screens */
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(256px, auto);
+    gap: 14px;
   }
 
-  @media (max-width: 640px) {
-    grid-auto-rows: minmax(240px, auto);
+  /* large screens */
+  @media (min-width: 1024px) {
+    grid-auto-rows: minmax(276px, auto);
+    gap: 16px;
   }
 `;
 
