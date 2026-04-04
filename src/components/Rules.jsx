@@ -15,9 +15,6 @@ export function Rules() {
           <li>
             A <strong>valid game</strong> that is <strong>eligible</strong> to{' '}
             <strong>count toward points</strong> needs a <strong>minimum of 6 players</strong>.
-            The <strong>only exception</strong> is a <strong>late cancellation</strong>: someone
-            who drops out <strong>unexpectedly</strong> within <strong>2–3 hours</strong> of the{' '}
-            <strong>scheduled start</strong>. In that case, <strong>5 players</strong> is enough.
           </li>
           <li>
             <strong>RF</strong> scores <strong>10</strong> points; <strong>SF</strong> scores{' '}
