@@ -621,7 +621,7 @@ export const games = [
   },
   {
     id: 36,
-    dayId: 6,
+    dayId: 7,
     pointsByPlayer: {
       Landi: 4,
       Duli: 1,
