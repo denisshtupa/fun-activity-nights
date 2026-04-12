@@ -635,5 +635,108 @@ export const games = [
       Gesti: 'x'
     },
     handBonuses: { RF: null, SF: null }
+  },
+  // Day 8 – 6 games (12 Apr)
+  {
+    id: 37,
+    dayId: 8,
+    pointsByPlayer: {
+      Landi: 1,
+      Duli: 0,
+      Antonio: 4,
+      Ervir: 'x',
+      Ardit: 0,
+      Visi: 0,
+      Arber: 0,
+      Klanti: 2,
+      Denis: 'x',
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 38,
+    dayId: 8,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 0,
+      Antonio: 4,
+      Ervir: 0,
+      Ardit: 0,
+      Visi: 0,
+      Arber: 2,
+      Klanti: 1,
+      Denis: 0,
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 39,
+    dayId: 8,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 0,
+      Antonio: 0,
+      Ervir: 4,
+      Ardit: 2,
+      Visi: 0,
+      Arber: 1,
+      Klanti: 0,
+      Denis: 0,
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 40,
+    dayId: 8,
+    pointsByPlayer: {
+      Landi: 1,
+      Duli: 0,
+      Antonio: 0,
+      Ervir: 2,
+      Ardit: 4,
+      Visi: 0,
+      Arber: 0,
+      Klanti: 0,
+      Denis: 0,
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 41,
+    dayId: 8,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 0,
+      Antonio: 0,
+      Ervir: 2,
+      Ardit: 0,
+      Visi: 0,
+      Arber: 0,
+      Klanti: 4,
+      Denis: 1,
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 42,
+    dayId: 8,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 2,
+      Antonio: 0,
+      Ervir: 4,
+      Ardit: 0,
+      Visi: 1,
+      Arber: 'x',
+      Klanti: 0,
+      Denis: 'x',
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
   }
 ];

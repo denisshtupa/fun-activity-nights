@@ -24,6 +24,10 @@ export function Rules() {
             is <strong>on the ground</strong>, <strong>nobody</strong> receives those{' '}
             <strong>points</strong>.
           </li>
+          <li>
+            Each player may take up to <strong>2 re-buys</strong>. <strong>Revoting</strong> on
+            this rule is <strong> strictly prohibited</strong>.
+          </li>
         </RulesList>
       </Card>
     </RulesSection>
