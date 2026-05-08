@@ -910,5 +910,90 @@ export const games = [
       Gesti: 'x'
     },
     handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 53,
+    dayId: 10,
+    pointsByPlayer: {
+      Landi: 4,
+      Duli: 2,
+      Antonio: 0,
+      Ervir: 0,
+      Ardit: 0,
+      Visi: 0,
+      Arber: 1,
+      Klanti: 0,
+      Denis: 'x',
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 54,
+    dayId: 10,
+    pointsByPlayer: {
+      Landi: 1,
+      Duli: 0,
+      Antonio: 0,
+      Ervir: 2,
+      Ardit: 0,
+      Visi: 0,
+      Arber: 4,
+      Klanti: 0,
+      Denis: 0,
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 55,
+    dayId: 10,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 0,
+      Antonio: 2,
+      Ervir: 4,
+      Ardit: 0,
+      Visi: 1,
+      Arber: 0,
+      Klanti: 0,
+      Denis: 0,
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 56,
+    dayId: 10,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 2,
+      Antonio: 0,
+      Ervir: 4,
+      Ardit: 0,
+      Visi: 1,
+      Arber: 0,
+      Klanti: 'x',
+      Denis: 0,
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 57,
+    dayId: 10,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 0,
+      Antonio: 2,
+      Ervir: 4,
+      Ardit: 1,
+      Visi: 0,
+      Arber: 0,
+      Klanti: 'x',
+      Denis: 0,
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
   }
 ];
