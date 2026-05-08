@@ -913,7 +913,7 @@ export const games = [
   },
   {
     id: 53,
-    dayId: 10,
+    dayId: 11,
     pointsByPlayer: {
       Landi: 4,
       Duli: 2,
@@ -930,7 +930,7 @@ export const games = [
   },
   {
     id: 54,
-    dayId: 10,
+    dayId: 11,
     pointsByPlayer: {
       Landi: 1,
       Duli: 0,
@@ -947,7 +947,7 @@ export const games = [
   },
   {
     id: 55,
-    dayId: 10,
+    dayId: 11,
     pointsByPlayer: {
       Landi: 0,
       Duli: 0,
@@ -964,7 +964,7 @@ export const games = [
   },
   {
     id: 56,
-    dayId: 10,
+    dayId: 11,
     pointsByPlayer: {
       Landi: 0,
       Duli: 2,
@@ -981,7 +981,7 @@ export const games = [
   },
   {
     id: 57,
-    dayId: 10,
+    dayId: 11,
     pointsByPlayer: {
       Landi: 0,
       Duli: 0,
