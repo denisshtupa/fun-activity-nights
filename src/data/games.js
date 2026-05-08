@@ -922,7 +922,7 @@ export const games = [
       Ardit: 0,
       Visi: 0,
       Arber: 1,
-      Klanti: 0,
+      Klanti: 'x',
       Denis: 'x',
       Gesti: 'x'
     },
@@ -939,7 +939,7 @@ export const games = [
       Ardit: 0,
       Visi: 0,
       Arber: 4,
-      Klanti: 0,
+      Klanti: 'x',
       Denis: 0,
       Gesti: 'x'
     },
@@ -956,7 +956,7 @@ export const games = [
       Ardit: 0,
       Visi: 1,
       Arber: 0,
-      Klanti: 0,
+      Klanti: 'x',
       Denis: 0,
       Gesti: 'x'
     },
