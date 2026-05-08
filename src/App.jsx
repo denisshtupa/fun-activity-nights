@@ -7,6 +7,7 @@ import {
   TitleGroup,
   Title,
   Badge,
+  BadgeGroup,
   Layout,
   ChartsSection,
   ChartsGrid
@@ -31,6 +32,7 @@ const readStoredAuth = () => {
 const App = () => {
   const [authenticated, setAuthenticated] = useState(readStoredAuth);
   const nightsPlayed = useMemo(() => countNightsPlayed(), []);
+  const gamesToGo = Math.max(TOTAL_TOURNAMENT_NIGHTS - nightsPlayed, 0);
 
   if (!authenticated) {
     return <LoginPage onSuccess={() => setAuthenticated(true)} />;
@@ -42,13 +44,16 @@ const App = () => {
         <TitleGroup>
           <Title>Poker Nights Dashboard</Title>
         </TitleGroup>
-        <div>
+        <BadgeGroup>
+          <Badge $variant="secondary">
+            <span>{gamesToGo} games to go</span>
+          </Badge>
           <Badge>
             <span>
               {nightsPlayed}/{TOTAL_TOURNAMENT_NIGHTS} nights played
             </span>
           </Badge>
-        </div>
+        </BadgeGroup>
       </Header>
 
       <Layout>

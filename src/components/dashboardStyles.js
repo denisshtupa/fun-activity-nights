@@ -34,14 +34,23 @@ export const Badge = styled.span`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: radial-gradient(circle at top left, #22c55e, #16a34a);
-  color: #e5f9ed;
+  background: ${({ $variant }) =>
+    $variant === 'secondary'
+      ? 'radial-gradient(circle at top left, #6366f1, #4f46e5)'
+      : 'radial-gradient(circle at top left, #22c55e, #16a34a)'};
+  color: ${({ $variant }) => ($variant === 'secondary' ? '#e0e7ff' : '#e5f9ed')};
   padding: 6px 12px;
   border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+`;
+
+export const BadgeGroup = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 `;
 
 export const Layout = styled.main`
