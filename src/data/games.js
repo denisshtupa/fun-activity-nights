@@ -1045,7 +1045,7 @@ export const games = [
       Denis: 4,
       Gesti: 0
     },
-    handBonuses: { RF: null, SF: null }
+    handBonuses: { RF: 'Visi', SF: null }
   },
   {
     id: 61,
