@@ -996,6 +996,7 @@ export const games = [
     },
     handBonuses: { RF: null, SF: null }
   },
+  // Day 12 – 5 games (9 May)
   {
     id: 58,
     dayId: 12,
@@ -1076,6 +1077,75 @@ export const games = [
       Visi: 1,
       Arber: 'x',
       Klanti: 0,
+      Denis: 0,
+      Gesti: 0
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  // Day 13 – 4 games (14 May)
+  {
+    id: 63,
+    dayId: 13,
+    pointsByPlayer: {
+      Landi: 'x',
+      Duli: 0,
+      Antonio: 'x',
+      Ervir: 4,
+      Ardit: 0,
+      Visi: 'x',
+      Arber: 1,
+      Klanti: 'x',
+      Denis: 2,
+      Gesti: 0
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 64,
+    dayId: 13,
+    pointsByPlayer: {
+      Landi: 'x',
+      Duli: 0,
+      Antonio: 'x',
+      Ervir: 0,
+      Ardit: 1,
+      Visi: 0,
+      Arber: 2,
+      Klanti: 'x',
+      Denis: 0,
+      Gesti: 4
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 65,
+    dayId: 13,
+    pointsByPlayer: {
+      Landi: 'x',
+      Duli: 0,
+      Antonio: 0,
+      Ervir: 4,
+      Ardit: 0,
+      Visi: 2,
+      Arber: 0,
+      Klanti: 'x',
+      Denis: 1,
+      Gesti: 0
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 66,
+    dayId: 13,
+    pointsByPlayer: {
+      Landi: 'x',
+      Duli: 4,
+      Antonio: 1,
+      Ervir: 0,
+      Ardit: 0,
+      Visi: 2,
+      Arber: 0,
+      Klanti: 'x',
       Denis: 0,
       Gesti: 0
     },
