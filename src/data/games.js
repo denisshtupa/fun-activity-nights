@@ -1236,5 +1236,125 @@ export const games = [
       Gesti: 'x'
     },
     handBonuses: { RF: null, SF: null }
+  },
+  // Day 15 – 7 games (30 May)
+  {
+    id: 72,
+    dayId: 15,
+    pointsByPlayer: {
+      Landi: 2,
+      Duli: 0,
+      Antonio: 1,
+      Ervir: 'x',
+      Ardit: 0,
+      Visi: 0,
+      Arber: 0,
+      Klanti: 4,
+      Denis: 'x',
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 73,
+    dayId: 15,
+    pointsByPlayer: {
+      Landi: 4,
+      Duli: 0,
+      Antonio: 0,
+      Ervir: 'x',
+      Ardit: 1,
+      Visi: 0,
+      Arber: 2,
+      Klanti: 0,
+      Denis: 'x',
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 74,
+    dayId: 15,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 0,
+      Antonio: 0,
+      Ervir: 'x',
+      Ardit: 1,
+      Visi: 0,
+      Arber: 2,
+      Klanti: 4,
+      Denis: 'x',
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 75,
+    dayId: 15,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 0,
+      Antonio: 1,
+      Ervir: 'x',
+      Ardit: 0,
+      Visi: 4,
+      Arber: 2,
+      Klanti: 0,
+      Denis: 'x',
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 76,
+    dayId: 15,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 0,
+      Antonio: 2,
+      Ervir: 'x',
+      Ardit: 0,
+      Visi: 0,
+      Arber: 4,
+      Klanti: 1,
+      Denis: 'x',
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 77,
+    dayId: 15,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 4,
+      Antonio: 2,
+      Ervir: 'x',
+      Ardit: 0,
+      Visi: 1,
+      Arber: 0,
+      Klanti: 0,
+      Denis: 'x',
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
+  },
+  {
+    id: 78,
+    dayId: 15,
+    pointsByPlayer: {
+      Landi: 0,
+      Duli: 4,
+      Antonio: 0,
+      Ervir: 'x',
+      Ardit: 1,
+      Visi: 'x',
+      Arber: 2,
+      Klanti: 0,
+      Denis: 'x',
+      Gesti: 'x'
+    },
+    handBonuses: { RF: null, SF: null }
   }
 ];
