@@ -53,6 +53,37 @@ export const BadgeGroup = styled.div`
   gap: 8px;
 `;
 
+export const SeasonTabBar = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(55, 65, 81, 0.9);
+`;
+
+export const SeasonTab = styled.button`
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  background: ${({ $active }) =>
+    $active ? 'linear-gradient(135deg, #22c55e, #16a34a)' : 'transparent'};
+  color: ${({ $active }) => ($active ? '#ecfdf5' : '#94a3b8')};
+  box-shadow: ${({ $active }) => ($active ? '0 4px 14px rgba(34, 197, 94, 0.35)' : 'none')};
+
+  &:hover {
+    color: ${({ $active }) => ($active ? '#ecfdf5' : '#e2e8f0')};
+  }
+`;
+
 export const Layout = styled.main`
   display: grid;
   grid-template-columns: minmax(0, 1fr);

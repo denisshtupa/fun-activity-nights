@@ -1,0 +1,122 @@
+{
+  "meta": {
+    "season": 3,
+    "title": "Season 3",
+    "dataEntry": "G = game, PL = players present, 1–4 = podium places, M = absent. Award points from scoringByPlayerCount for that PL. handBonuses: RF, SF, PO = player name or null.",
+    "scoringByPlayerCount": {
+      "6-7": [4, 2, 1],
+      "8-9": [5, 3, 2, 1],
+      "10": [6, 4, 2, 1]
+    }
+  },
+  "totalTournamentNights": 15,
+  "players": [
+    "Antonio",
+    "Klanti",
+    "Ardit",
+    "Arber",
+    "Ervir",
+    "Visi",
+    "Duli",
+    "Denis",
+    "Landi",
+    "Gesti"
+  ],
+  "bonuses": {
+    "RF": 10,
+    "SF": 5,
+    "PO": 1
+  },
+  "games": [
+    {
+      "id": 1,
+      "dayId": 1,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": "x",
+        "Duli": 0,
+        "Antonio": 5,
+        "Ervir": 3,
+        "Ardit": 0,
+        "Visi": "x",
+        "Arber": 2,
+        "Klanti": 0,
+        "Denis": 0,
+        "Gesti": 1
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 2,
+      "dayId": 1,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": "x",
+        "Duli": 2,
+        "Antonio": 3,
+        "Ervir": 0,
+        "Ardit": 5,
+        "Visi": "x",
+        "Arber": 0,
+        "Klanti": 1,
+        "Denis": 0,
+        "Gesti": 0
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 3,
+      "dayId": 1,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": "x",
+        "Duli": 1,
+        "Antonio": 0,
+        "Ervir": 0,
+        "Ardit": 3,
+        "Visi": "x",
+        "Arber": 0,
+        "Klanti": 0,
+        "Denis": 5,
+        "Gesti": 2
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 4,
+      "dayId": 1,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": "x",
+        "Duli": 5,
+        "Antonio": 0,
+        "Ervir": 0,
+        "Ardit": 0,
+        "Visi": "x",
+        "Arber": 3,
+        "Klanti": 2,
+        "Denis": 1,
+        "Gesti": 0
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 5,
+      "dayId": 1,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": "x",
+        "Duli": 0,
+        "Antonio": 3,
+        "Ervir": 1,
+        "Ardit": 5,
+        "Visi": "x",
+        "Arber": 0,
+        "Klanti": 0,
+        "Denis": 0,
+        "Gesti": 2
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    }
+  ]
+}

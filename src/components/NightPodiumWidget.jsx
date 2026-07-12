@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { players, games } from '../data/games.js';
 import { PLAYER_COLORS } from '../constants';
+import { useSeason } from '../SeasonContext';
 import {
   ChartCard,
   ChartTitle,
@@ -11,28 +11,35 @@ import {
   FilterSelect
 } from './dashboardStyles';
 
-const PLACES = [
-  { id: 'first', optionLabel: '1st place', pointsValue: 4, shortLabel: '1st places' },
-  { id: 'second', optionLabel: '2nd place', pointsValue: 2, shortLabel: '2nd places' },
-  { id: 'third', optionLabel: '3rd place', pointsValue: 1, shortLabel: '3rd places' }
+const BASE_PLACES = [
+  { id: 'first', optionLabel: '1st place', placeRank: 1, shortLabel: '1st places' },
+  { id: 'second', optionLabel: '2nd place', placeRank: 2, shortLabel: '2nd places' },
+  { id: 'third', optionLabel: '3rd place', placeRank: 3, shortLabel: '3rd places' }
 ];
 
-function countPlaceAcrossGames(name, pointsValue) {
-  let n = 0;
-  games.forEach((game) => {
-    if (game.pointsByPlayer[name] === pointsValue) n += 1;
-  });
-  return n;
-}
+const FOURTH_PLACE = {
+  id: 'fourth',
+  optionLabel: '4th place',
+  placeRank: 4,
+  shortLabel: '4th places'
+};
 
 export function NightPodiumWidget() {
+  const { season, stats } = useSeason();
+  const { players, games } = season;
+  const places = season.hasFourthPlace ? [...BASE_PLACES, FOURTH_PLACE] : BASE_PLACES;
+
   const [placeId, setPlaceId] = useState('first');
-  const place = PLACES.find((p) => p.id === placeId) ?? PLACES[0];
+  const place = places.find((p) => p.id === placeId) ?? places[0];
+  const countPlace = useMemo(
+    () => stats.countPlaceAcrossGames(place.placeRank),
+    [stats, place.placeRank]
+  );
 
   const { barData, barMax, gamesCount } = useMemo(() => {
     const rows = players.map((name) => ({
       name,
-      count: countPlaceAcrossGames(name, place.pointsValue)
+      count: countPlace(name)
     }));
     const sortedLowToHigh = [...rows].sort(
       (a, b) => a.count - b.count || a.name.localeCompare(b.name)
@@ -44,14 +51,12 @@ export function NightPodiumWidget() {
       barMax,
       gamesCount: games.length
     };
-  }, [place.pointsValue]);
+  }, [players, games.length, countPlace]);
 
   return (
     <ChartCard>
       <ChartTitle>Podium finishes</ChartTitle>
-      <ChartMeta>
-        Pick a position below, counting that position over all games.
-      </ChartMeta>
+      <ChartMeta>Pick a position below, counting that position over all games.</ChartMeta>
       <NightStandingsToolbar>
         <NightStandingsLabel>Position</NightStandingsLabel>
         <FilterSelect
@@ -59,7 +64,7 @@ export function NightPodiumWidget() {
           onChange={(e) => setPlaceId(e.target.value)}
           aria-label="Podium position filter"
         >
-          {PLACES.map((p) => (
+          {places.map((p) => (
             <option key={p.id} value={p.id}>
               {p.optionLabel}
             </option>

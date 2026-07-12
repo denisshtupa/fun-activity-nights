@@ -1,8 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { players, games } from '../data/games.js';
 import { PLAYER_COLORS } from '../constants';
-import { getMaxNightFromGames, getPlayerHandBonusForGame } from '../pokerStats';
+import { useSeason } from '../SeasonContext';
 import {
   ChartCard,
   ChartTitle,
@@ -13,9 +12,12 @@ import {
 } from './dashboardStyles';
 
 export function NightStandingsWidget() {
-  const cumulativeChartMaxNight = useMemo(() => getMaxNightFromGames(), []);
+  const { season, stats } = useSeason();
+  const { players, games } = season;
 
-  const [standingsNightId, setStandingsNightId] = useState(() => getMaxNightFromGames());
+  const cumulativeChartMaxNight = useMemo(() => stats.getMaxNightFromGames(), [stats]);
+
+  const [standingsNightId, setStandingsNightId] = useState(() => stats.getMaxNightFromGames());
 
   const { standingsNightBarData, standingsNightGameCount, standingsNightBarMax } = useMemo(() => {
     const nightGames = games.filter((g) => (g.dayId ?? 1) === standingsNightId);
@@ -26,7 +28,7 @@ export function NightStandingsWidget() {
         nightGames.forEach((game) => {
           const v = game.pointsByPlayer[name];
           if (typeof v === 'number') {
-            pts += v + getPlayerHandBonusForGame(game, name);
+            pts += v + stats.getPlayerHandBonusForGame(game, name);
             gamesPlayedThatNight += 1;
           }
         });
@@ -42,7 +44,7 @@ export function NightStandingsWidget() {
       standingsNightGameCount: nightGames.length,
       standingsNightBarMax
     };
-  }, [standingsNightId]);
+  }, [standingsNightId, games, players, stats]);
 
   return (
     <ChartCard>

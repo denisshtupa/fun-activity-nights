@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useSeason } from '../SeasonContext';
 import {
   Card,
   CardHeader,
@@ -19,22 +20,18 @@ import {
   MiniStat,
   Dot
 } from './dashboardStyles';
-import {
-  computePlayerStats,
-  comparePlayersForTable,
-  compareTotalThenPodiumsThenPpg,
-  TABLE_SORT_DEFAULTS
-} from '../pokerStats';
 
 export function OverallStandingsCard() {
-  const playerStats = useMemo(() => computePlayerStats(), []);
+  const { season, stats } = useSeason();
+  const { players } = season;
+  const playerStats = useMemo(() => stats.computePlayerStats(), [stats]);
   const [tableSortKey, setTableSortKey] = useState('total');
   const [tableSortDir, setTableSortDir] = useState('desc');
 
   const tableRows = useMemo(
     () =>
-      [...playerStats].sort((a, b) => comparePlayersForTable(a, b, tableSortKey, tableSortDir)),
-    [playerStats, tableSortKey, tableSortDir]
+      [...playerStats].sort((a, b) => stats.comparePlayersForTable(a, b, tableSortKey, tableSortDir)),
+    [playerStats, stats, tableSortKey, tableSortDir]
   );
 
   const handleTableSort = (key) => {
@@ -42,13 +39,13 @@ export function OverallStandingsCard() {
       setTableSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
     } else {
       setTableSortKey(key);
-      setTableSortDir(TABLE_SORT_DEFAULTS[key] ?? 'desc');
+      setTableSortDir(stats.TABLE_SORT_DEFAULTS[key] ?? 'desc');
     }
   };
 
   const chartSortedPlayers = useMemo(
-    () => [...playerStats].sort((a, b) => -compareTotalThenPodiumsThenPpg(a, b)),
-    [playerStats]
+    () => [...playerStats].sort((a, b) => -stats.compareTotalThenPodiumsThenPpg(a, b)),
+    [playerStats, stats]
   );
 
   const topPerformer = chartSortedPlayers[0];
@@ -128,6 +125,16 @@ export function OverallStandingsCard() {
                   </SortGlyph>
                 </ThInner>
               </SortableTh>
+              {season.hasFourthPlace ? (
+                <SortableTh scope="col" onClick={() => handleTableSort('fourths')}>
+                  <ThInner>
+                    4th
+                    <SortGlyph $active={tableSortKey === 'fourths'}>
+                      {tableSortKey === 'fourths' ? (tableSortDir === 'asc' ? '↑' : '↓') : '↕'}
+                    </SortGlyph>
+                  </ThInner>
+                </SortableTh>
+              ) : null}
               <SortableTh scope="col" onClick={() => handleTableSort('avgPoints')}>
                 <ThInner>
                   PPG
@@ -152,6 +159,16 @@ export function OverallStandingsCard() {
                   </SortGlyph>
                 </ThInner>
               </SortableTh>
+              {season.hasPoBonus ? (
+                <SortableTh scope="col" onClick={() => handleTableSort('poCount')}>
+                  <ThInner>
+                    PO
+                    <SortGlyph $active={tableSortKey === 'poCount'}>
+                      {tableSortKey === 'poCount' ? (tableSortDir === 'asc' ? '↑' : '↓') : '↕'}
+                    </SortGlyph>
+                  </ThInner>
+                </SortableTh>
+              ) : null}
             </Tr>
           </thead>
           <tbody>
@@ -170,9 +187,11 @@ export function OverallStandingsCard() {
                 <Td>{player.wins}</Td>
                 <Td>{player.seconds}</Td>
                 <Td>{player.thirds}</Td>
+                {season.hasFourthPlace ? <Td>{player.fourths}</Td> : null}
                 <Td>{player.avgPoints.toFixed(2)}</Td>
                 <Td>{player.rfCount}</Td>
                 <Td>{player.sfCount}</Td>
+                {season.hasPoBonus ? <Td>{player.poCount}</Td> : null}
               </Tr>
             ))}
           </tbody>
@@ -183,38 +202,40 @@ export function OverallStandingsCard() {
         <MiniStat>
           <Dot color="#facc15" />
           <span>
-            Top performer: <strong>{topPerformer.name}</strong> ({topPerformer.totalPoints} pts)
+            Top performer: <strong>{topPerformer?.name ?? '—'}</strong> ({topPerformer?.totalPoints ?? 0}{' '}
+            pts)
           </span>
         </MiniStat>
         <MiniStat>
           <Dot color="#3b82f6" />
           <span>
-            Most participated: <strong>{mostGamesPlayed.name}</strong> ({mostGamesPlayed.gamesPlayed}{' '}
-            games)
+            Most participated: <strong>{mostGamesPlayed?.name ?? '—'}</strong> (
+            {mostGamesPlayed?.gamesPlayed ?? 0} games)
           </span>
         </MiniStat>
         <MiniStat>
           <Dot color="#22c55e" />
           <span>
-            Most 1st: <strong>{mostFirst.name}</strong> ({mostFirst.wins} wins)
+            Most 1st: <strong>{mostFirst?.name ?? '—'}</strong> ({mostFirst?.wins ?? 0} wins)
           </span>
         </MiniStat>
         <MiniStat>
           <Dot color="#a855f7" />
           <span>
-            Most 2nd: <strong>{mostSecond.name}</strong> ({mostSecond.seconds})
+            Most 2nd: <strong>{mostSecond?.name ?? '—'}</strong> ({mostSecond?.seconds ?? 0})
           </span>
         </MiniStat>
         <MiniStat>
           <Dot color="#f97316" />
           <span>
-            Most 3rd: <strong>{mostThird.name}</strong> ({mostThird.thirds})
+            Most 3rd: <strong>{mostThird?.name ?? '—'}</strong> ({mostThird?.thirds ?? 0})
           </span>
         </MiniStat>
         <MiniStat>
           <Dot color="#06b6d4" />
           <span>
-            PPG: <strong>{mostAvgPerGame.name}</strong> ({mostAvgPerGame.avgPoints.toFixed(2)})
+            PPG: <strong>{mostAvgPerGame?.name ?? '—'}</strong> (
+            {mostAvgPerGame?.avgPoints.toFixed(2) ?? '0.00'})
           </span>
         </MiniStat>
       </MiniStatRow>
