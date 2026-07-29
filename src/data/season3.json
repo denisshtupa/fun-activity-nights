@@ -117,6 +117,78 @@
         "Gesti": 2
       },
       "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 6,
+      "dayId": 2,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": 0,
+        "Duli": 3,
+        "Antonio": 2,
+        "Ervir": "x",
+        "Ardit": 0,
+        "Visi": "x",
+        "Arber": 1,
+        "Klanti": 0,
+        "Denis": 5,
+        "Gesti": 0
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 7,
+      "dayId": 2,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": 3,
+        "Duli": 2,
+        "Antonio": 0,
+        "Ervir": "x",
+        "Ardit": 0,
+        "Visi": "x",
+        "Arber": 5,
+        "Klanti": 1,
+        "Denis": 0,
+        "Gesti": 0
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 8,
+      "dayId": 2,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": 2,
+        "Duli": 0,
+        "Antonio": 1,
+        "Ervir": "x",
+        "Ardit": 5,
+        "Visi": "x",
+        "Arber": 3,
+        "Klanti": 0,
+        "Denis": 0,
+        "Gesti": 0
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 9,
+      "dayId": 2,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": 2,
+        "Duli": 5,
+        "Antonio": 0,
+        "Ervir": "x",
+        "Ardit": 1,
+        "Visi": "x",
+        "Arber": 0,
+        "Klanti": 3,
+        "Denis": 0,
+        "Gesti": 0
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
     }
   ]
 }
