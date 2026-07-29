@@ -64,6 +64,9 @@ export function OverallStandingsCard() {
   const mostThird = [...playerStats].sort(
     (a, b) => b.thirds - a.thirds || b.totalPoints - a.totalPoints
   )[0];
+  const mostFourth = [...playerStats].sort(
+    (a, b) => (b.fourths ?? 0) - (a.fourths ?? 0) || b.totalPoints - a.totalPoints
+  )[0];
 
   return (
     <Card>
@@ -231,6 +234,14 @@ export function OverallStandingsCard() {
             Most 3rd: <strong>{mostThird?.name ?? '—'}</strong> ({mostThird?.thirds ?? 0})
           </span>
         </MiniStat>
+        {season.hasFourthPlace ? (
+          <MiniStat>
+            <Dot color="#eab308" />
+            <span>
+              Most 4th: <strong>{mostFourth?.name ?? '—'}</strong> ({mostFourth?.fourths ?? 0})
+            </span>
+          </MiniStat>
+        ) : null}
         <MiniStat>
           <Dot color="#06b6d4" />
           <span>
