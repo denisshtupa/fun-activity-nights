@@ -189,6 +189,96 @@
         "Gesti": 0
       },
       "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 10,
+      "dayId": 3,
+      "playerCount": 7,
+      "pointsByPlayer": {
+        "Landi": "x",
+        "Duli": 0,
+        "Antonio": 0,
+        "Ervir": 0,
+        "Ardit": "x",
+        "Visi": "x",
+        "Arber": 1,
+        "Klanti": 0,
+        "Denis": 2,
+        "Gesti": 4
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 11,
+      "dayId": 3,
+      "playerCount": 7,
+      "pointsByPlayer": {
+        "Landi": "x",
+        "Duli": 0,
+        "Antonio": 2,
+        "Ervir": 0,
+        "Ardit": "x",
+        "Visi": "x",
+        "Arber": 0,
+        "Klanti": 4,
+        "Denis": 0,
+        "Gesti": 1
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 12,
+      "dayId": 3,
+      "playerCount": 7,
+      "pointsByPlayer": {
+        "Landi": "x",
+        "Duli": 0,
+        "Antonio": 4,
+        "Ervir": 0,
+        "Ardit": "x",
+        "Visi": "x",
+        "Arber": 0,
+        "Klanti": 2,
+        "Denis": 1,
+        "Gesti": 0
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 13,
+      "dayId": 3,
+      "playerCount": 7,
+      "pointsByPlayer": {
+        "Landi": "x",
+        "Duli": 0,
+        "Antonio": 2,
+        "Ervir": 4,
+        "Ardit": "x",
+        "Visi": "x",
+        "Arber": 0,
+        "Klanti": 0,
+        "Denis": 0,
+        "Gesti": 1
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 14,
+      "dayId": 3,
+      "playerCount": 7,
+      "pointsByPlayer": {
+        "Landi": "x",
+        "Duli": 0,
+        "Antonio": 1,
+        "Ervir": 4,
+        "Ardit": "x",
+        "Visi": "x",
+        "Arber": 0,
+        "Klanti": 0,
+        "Denis": 0,
+        "Gesti": 2
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
     }
   ]
 }
