@@ -351,6 +351,96 @@
         "Gesti": 0
       },
       "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 19,
+      "dayId": 5,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": 5,
+        "Duli": 0,
+        "Antonio": 0,
+        "Ervir": 2,
+        "Ardit": 0,
+        "Visi": 0,
+        "Arber": 3,
+        "Klanti": "x",
+        "Denis": "x",
+        "Gesti": 1
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 20,
+      "dayId": 5,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": 5,
+        "Duli": 0,
+        "Antonio": 0,
+        "Ervir": 1,
+        "Ardit": 2,
+        "Visi": 0,
+        "Arber": 3,
+        "Klanti": "x",
+        "Denis": "x",
+        "Gesti": 0
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": "Landi" }
+    },
+    {
+      "id": 21,
+      "dayId": 5,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": 0,
+        "Duli": 5,
+        "Antonio": 0,
+        "Ervir": 1,
+        "Ardit": 0,
+        "Visi": 2,
+        "Arber": 0,
+        "Klanti": "x",
+        "Denis": "x",
+        "Gesti": 3
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 22,
+      "dayId": 5,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": 0,
+        "Duli": 0,
+        "Antonio": 3,
+        "Ervir": 5,
+        "Ardit": 1,
+        "Visi": 2,
+        "Arber": 0,
+        "Klanti": "x",
+        "Denis": "x",
+        "Gesti": 0
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 23,
+      "dayId": 5,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": 0,
+        "Duli": 2,
+        "Antonio": 1,
+        "Ervir": 0,
+        "Ardit": 3,
+        "Visi": 5,
+        "Arber": 0,
+        "Klanti": "x",
+        "Denis": "x",
+        "Gesti": 0
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
     }
   ]
 }
