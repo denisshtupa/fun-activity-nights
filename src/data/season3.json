@@ -441,6 +441,24 @@
         "Gesti": 0
       },
       "handBonuses": { "RF": null, "SF": null, "PO": null }
+    },
+    {
+      "id": 24,
+      "dayId": 5,
+      "playerCount": 8,
+      "pointsByPlayer": {
+        "Landi": 0,
+        "Duli": 2,
+        "Antonio": 5,
+        "Ervir": 0,
+        "Ardit": 1,
+        "Visi": 0,
+        "Arber": 3,
+        "Klanti": "x",
+        "Denis": "x",
+        "Gesti": 0
+      },
+      "handBonuses": { "RF": null, "SF": null, "PO": null }
     }
   ]
 }
