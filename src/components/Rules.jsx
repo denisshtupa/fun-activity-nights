@@ -14,7 +14,7 @@ export function Rules() {
           <li>
             When <strong>two or more</strong> players finish with <strong>equal points</strong>,
             ties are broken in this order: <strong>most 1st places</strong>, then{' '}
-            <strong>most 2nd places</strong>, then <strong>highest PPG</strong>.
+            <strong>most 2nd places</strong>, then <strong>most 3rd places</strong>, then <strong>highest PPG</strong>.
           </li>
           <li>
             A <strong>valid game</strong> that is <strong>eligible</strong> to{' '}
